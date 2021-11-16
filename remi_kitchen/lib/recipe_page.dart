@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class RecipePage extends StatelessWidget {
+  static const routeName = '/recipe-page';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
+        actions: const [
             Icon(Icons.search),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -13,9 +15,9 @@ class RecipePage extends StatelessWidget {
             ),
             Icon(Icons.account_circle_outlined),
           ],
-          backgroundColor: Color(0xffa4dfa7),
+          backgroundColor: const Color(0xffa4dfa7),
       ),
-      body: Text("Recipe 1"),
+      body: const Text("Recipe 1"),
     );
   }
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatelessWidget {
+  static const routeName = '/signup-page';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
+        constraints: const BoxConstraints.expand(),
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("images/wallpaper.png"),
             fit: BoxFit.cover
@@ -14,7 +16,7 @@ class SignupPage extends StatelessWidget {
         ),
         child: Center(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
               topRight: Radius.circular(40.0),
               bottomRight: Radius.circular(40.0),
