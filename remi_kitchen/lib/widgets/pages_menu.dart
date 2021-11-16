@@ -31,18 +31,6 @@ class PagesMenu extends StatelessWidget{
                   padding: const EdgeInsets.all(15),
                   child: Text('Signup Page'),
                 )),
-            InkWell(
-                onTap: () => {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) {
-                        return RecipePage();
-                      }))
-                    },
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  child: Text('Reciepe Page'),
-                )),
-            
           ],
         );
   }

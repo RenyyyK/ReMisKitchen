@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/recipe.dart';
+import '../recipe_page.dart';
 
 class RecipeBox extends StatelessWidget {
   final String id;
@@ -34,7 +35,15 @@ class RecipeBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return InkWell(
+      onTap: () => {
+        Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) {
+            return RecipePage();
+          }))
+      },
+      child: Container(
+        child:Card(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           elevation: 4,
@@ -103,6 +112,7 @@ class RecipeBox extends StatelessWidget {
                     ),
                   ],
                 ))
-          ]));
+          ]))
+      ));
   }
 }
