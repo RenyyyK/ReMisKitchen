@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:remi_kitchen/authentication/auth_screen.dart';
 import 'package:remi_kitchen/authentication/signup_page.dart';
 import 'package:remi_kitchen/home_page.dart';
 import 'package:remi_kitchen/recipe_page.dart';
@@ -14,7 +15,7 @@ class RemisKitchen extends StatelessWidget  {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'RemisKitchen',
-      home: HomePage(),
+      home: AuthScreen(), //HomePage(),
     );
   }
 }
