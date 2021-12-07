@@ -2,11 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:remi_kitchen/authentication/auth_screen.dart';
-import 'package:remi_kitchen/authentication/signup_page.dart';
 import 'package:remi_kitchen/home_page.dart';
 import 'package:remi_kitchen/recipe_page.dart';
-
-import 'authentication/login_page.dart';
 
 void main() => runApp(RemisKitchen());
 
@@ -15,7 +12,7 @@ class RemisKitchen extends StatelessWidget  {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'RemisKitchen',
-      home: AuthScreen(), //HomePage(),
+      home: HomePage(),
     );
   }
 }

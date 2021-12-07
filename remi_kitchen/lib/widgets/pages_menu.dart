@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remi_kitchen/authentication/login_page.dart';
-import 'package:remi_kitchen/authentication/signup_page.dart';
+import 'package:remi_kitchen/authentication/auth_screen.dart';
 
 import '../recipe_page.dart';
 
@@ -13,24 +12,14 @@ class PagesMenu extends StatelessWidget{
                 onTap: () => {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (_) {
-                        return LoginPage();
+                        return AuthScreen();
                       }))
                     },
                 child: Container(
                   padding: const EdgeInsets.all(15),
-                  child: Text('Login Page'),
+                  child: Text('Authentication'),
                 )),
-            InkWell(
-                onTap: () => {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) {
-                        return SignupPage();
-                      }))
-                    },
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  child: Text('Signup Page'),
-                )),
+            
           ],
         );
   }
