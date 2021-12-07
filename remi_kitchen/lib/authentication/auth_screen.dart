@@ -17,17 +17,13 @@ class AuthScreen extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-                  Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: [0, 1],
-              ),
+            constraints: const BoxConstraints.expand(),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+              image: AssetImage("images/wallpaper.png"),
+              fit: BoxFit.cover
             ),
+          ),
           ),
           SingleChildScrollView(
             child: Container(
@@ -128,8 +124,11 @@ class _AuthCardState extends State<AuthCard> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Card(
-      color: Color(0x00000000),
-      shadowColor: Color(0x00000000),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(40.0),
+      ),
+      color: _authMode == AuthMode.Signup ? Color(0x9004471C) : Color(0x90b57f50),
+      // shadowColor: Color(0x00000000),
       child: Container(
         height: _authMode == AuthMode.Signup ? 520 : 460,
         constraints:
@@ -142,7 +141,7 @@ class _AuthCardState extends State<AuthCard> {
             child: Column(
               children: <Widget>[
                 Center(
-                  child: Text("LOG IN\n", 
+                  child: Text(_authMode == AuthMode.Signup ? "SIGN UP\n" : "LOG IN\n", 
                     style: const TextStyle(
                       fontSize: 50,
                       color: Color(0xffF7F3F3),
@@ -237,17 +236,23 @@ class _AuthCardState extends State<AuthCard> {
                     ),
                     padding:
                         EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                    color: Theme.of(context).primaryColor,
+                    color: _authMode == AuthMode.Signup? Color(0x90b57f50) : Color(0x9004471C), 
                     textColor: Theme.of(context).primaryTextTheme.button!.color,
                   ),
-                FlatButton(
-                  child: Text(
-                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
-                  onPressed: _switchAuthMode,
-                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  textColor: Theme.of(context).primaryColor,
-                ),
+                Text("\n"),
+                Text(_authMode == AuthMode.Login ? 'Don\'t have an account yet?' : 'Already have an account?'),
+                RaisedButton(
+                    child: Text(_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'),
+                    onPressed: _switchAuthMode,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                    color: _authMode == AuthMode.Signup? Color(0x9004471C) : Color(0x90b57f50), 
+                    textColor: Theme.of(context).primaryTextTheme.button!.color,
+                  ),
+                
               ],
             ),
           ),
