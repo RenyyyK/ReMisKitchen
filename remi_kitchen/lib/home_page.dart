@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:remi_kitchen/authentication/auth_screen.dart';
 import 'package:remi_kitchen/models/recipe.dart';
-import 'package:remi_kitchen/recipe_page.dart';
-import 'package:remi_kitchen/widgets/pages_menu.dart';
+import 'package:remi_kitchen/widgets/app_drawer.dart';
 import 'package:remi_kitchen/widgets/recipe_box.dart';
 import './dummy_data.dart';
 
 List<Recipe> availableRecipes = DUMMY_MEALS;
 
 class HomePage extends StatelessWidget {
+  static const routeName = '/home';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            Icon(Icons.search),
-            Padding(
+            const Icon(Icons.search),
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Icon(Icons.favorite),
             ),
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.account_circle_outlined,
                 color: Colors.white,
               ),
@@ -34,6 +34,7 @@ class HomePage extends StatelessWidget {
           ],
           backgroundColor: const Color(0xffa4dfa7),
         ),
+        drawer: AppDrawer(),
         body: Column(
           children: [
             Expanded(

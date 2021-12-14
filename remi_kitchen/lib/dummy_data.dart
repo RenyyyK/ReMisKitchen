@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remi_kitchen/models/ingredient.dart';
 
 import './models/recipe.dart';
 
@@ -11,12 +12,12 @@ const DUMMY_MEALS = [
         'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Spaghetti_Bolognese_mit_Parmesan_oder_Grana_Padano.jpg/800px-Spaghetti_Bolognese_mit_Parmesan_oder_Grana_Padano.jpg',
     duration: 20,
     ingredients: [
-      '4 Tomatoes',
-      '1 Tablespoon of Olive Oil',
-      '1 Onion',
-      '250g Spaghetti',
-      'Spices',
-      'Cheese (optional)'
+      Ingredient(id: 'i10', name: 'Tomatoes', unitOfMeasurement: UnitOfMeasurement.Unit, quantity: 4 , extraDetails: ''),
+      Ingredient(id: 'i11', name: 'Olive Oil', unitOfMeasurement: UnitOfMeasurement.TableSpoon, quantity: 1 , extraDetails: ''),
+      Ingredient(id: 'i10', name: 'Onion', unitOfMeasurement: UnitOfMeasurement.Unit, quantity: 1 , extraDetails: ''),
+      Ingredient(id: 'i11', name: 'Spaghetti', unitOfMeasurement: UnitOfMeasurement.Gram, quantity: 250 , extraDetails: ''),
+      Ingredient(id: 'i10', name: 'Spices', unitOfMeasurement: UnitOfMeasurement.None, quantity: 1.5 , extraDetails: ''),
+      Ingredient(id: 'i11', name: 'Cheese', unitOfMeasurement: UnitOfMeasurement.None, quantity: 1 , extraDetails: 'optional'),
     ],
     steps: [
       'Cut the tomatoes and the onion into small pieces.',
@@ -38,11 +39,12 @@ const DUMMY_MEALS = [
         'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',
     duration: 10,
     ingredients: [
-      '1 Slice White Bread',
-      '1 Slice Ham',
-      '1 Slice Pineapple',
-      '1-2 Slices of Cheese',
-      'Butter'
+      Ingredient(id: 'i7', name: 'White Bread', unitOfMeasurement: UnitOfMeasurement.Slice, quantity: 1 , extraDetails: ''),
+      Ingredient(id: 'i8', name: 'Ham', unitOfMeasurement:  UnitOfMeasurement.Slice, quantity: 1, extraDetails: ''),
+      Ingredient(id: 'i9', name: 'Pineapple', unitOfMeasurement:  UnitOfMeasurement.Slice, quantity: 1, extraDetails: ''),
+      Ingredient(id: 'i10', name: 'Cheese', unitOfMeasurement: UnitOfMeasurement.Slice, quantity: 1.5 , extraDetails: ''),
+      Ingredient(id: 'i11', name: 'Butter', unitOfMeasurement: UnitOfMeasurement.None, quantity: 1 , extraDetails: ''),
+      
     ],
     steps: [
       'Butter one side of the white bread',
@@ -60,12 +62,13 @@ const DUMMY_MEALS = [
         'https://cdn.pixabay.com/photo/2014/10/23/18/05/burger-500054_1280.jpg',
     duration: 45,
     ingredients: [
-      '300g Cattle Hack',
-      '1 Tomato',
-      '1 Cucumber',
-      '1 Onion',
-      'Ketchup',
-      '2 Burger Buns'
+      Ingredient(id: 'i1', name: 'Cattle Hack', unitOfMeasurement: UnitOfMeasurement.Gram, quantity: 300 , extraDetails: ''),
+      Ingredient(id: 'i2', name: 'Tomato', unitOfMeasurement:  UnitOfMeasurement.Unit, quantity: 1, extraDetails: ''),
+      Ingredient(id: 'i3', name: 'Cucumber', unitOfMeasurement:  UnitOfMeasurement.Unit, quantity: 1, extraDetails: ''),
+      Ingredient(id: 'i4', name: 'Onion', unitOfMeasurement:  UnitOfMeasurement.Unit, quantity: 1, extraDetails: ''),
+      Ingredient(id: 'i5', name: 'Ketchup', unitOfMeasurement: UnitOfMeasurement.None, quantity: 1, extraDetails: ''),
+      Ingredient(id: 'i6', name: 'Burger Buns', unitOfMeasurement: UnitOfMeasurement.Unit, quantity: 2, extraDetails: ''),
+
     ],
     steps: [
       'Form 2 patties',
