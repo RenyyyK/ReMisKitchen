@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:remi_kitchen/providers/auth.dart';
 
 enum AuthMode { Signup, Login }
@@ -79,7 +79,7 @@ class _AuthCardState extends State<AuthCard> {
       // Log user in
     } else {
       // Sign user up
-      // await Provider.of<Auth>(context, listen: false).signup(_authData['email'], _authData['password']);
+      await Provider.of<Auth>(context, listen: false).signup(_authData['email'], _authData['password']);
     }
     setState(() {
       _isLoading = false;

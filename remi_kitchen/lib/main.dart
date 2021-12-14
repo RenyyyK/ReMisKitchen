@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
 import 'package:remi_kitchen/authentication/auth_screen.dart';
 import 'package:remi_kitchen/home_page.dart';
@@ -11,16 +11,16 @@ void main() => runApp(RemisKitchen());
 class RemisKitchen extends StatelessWidget  {
   @override
   Widget build(BuildContext context) {
-    return /*MultiProvider(
+    return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
           value: Auth(),
         ),
       ],
-      child:*/ MaterialApp(
+      child: MaterialApp(
         title: 'RemisKitchen',
         home: HomePage(),
-      // )
+      )
     );
     
   }
