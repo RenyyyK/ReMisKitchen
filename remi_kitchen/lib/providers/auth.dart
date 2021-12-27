@@ -6,8 +6,21 @@ import 'package:remi_kitchen/models/http_exception.dart';
 
 class Auth with ChangeNotifier {
   late String token;
-  late DateTime expiryDate;
+  DateTime? expiryDate;
   late String userId;
+
+  bool get isAuth {
+    return getToken != null;
+  }
+
+  String? get getToken {
+    if (expiryDate != null &&
+        expiryDate!.isAfter(DateTime.now()) &&
+        token != null) {
+      return token;
+    }
+    return null;
+  }
 
   Future<void> authenticate(String? email, String? password, String urlSegment) async {
     final url = Uri.parse('https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyDaaM3yioT6kjRJg60hTNwyUFd7jAtQWyc');
@@ -26,6 +39,16 @@ class Auth with ChangeNotifier {
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
+      token = responseData['idToken'];
+      userId = responseData['localId'];
+      expiryDate = DateTime.now().add(
+        Duration(
+          seconds: int.parse(
+            responseData['expiresIn'],
+          ),
+        ),
+      );
+      notifyListeners();
     } catch(error) {
       throw error;
     }
