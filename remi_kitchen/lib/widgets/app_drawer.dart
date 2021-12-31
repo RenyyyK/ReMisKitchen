@@ -9,7 +9,6 @@ class AppDrawer extends StatelessWidget {
         AppBar(
           title: Text('Search for ingredients'),
           automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xffa4dfa7),
         ),
         Divider(),
       ],

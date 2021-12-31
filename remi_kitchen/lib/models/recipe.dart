@@ -14,6 +14,7 @@ class Recipe {
   final Complexity complexity;
   final bool isGlutenFree;
   final bool isLactoseFree;
+  final int calories;
 
   const Recipe({
     required this.id,
@@ -25,5 +26,6 @@ class Recipe {
     required this.steps,
     required this.isGlutenFree,
     required this.isLactoseFree,
+    required this.calories,
   });
 }

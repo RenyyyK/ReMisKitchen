@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:remi_kitchen/models/http_exception.dart';
@@ -36,7 +38,7 @@ class AuthScreen extends StatelessWidget {
                 children: <Widget>[
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
-                    child: AuthCard(),
+                    child: const AuthCard(),
                   ),
                 ],
               ),
@@ -71,14 +73,14 @@ class _AuthCardState extends State<AuthCard> {
     showDialog(
       context: context, 
       builder: (ctx) => AlertDialog(
-        title: Text('An error occured!'),
+        title: const Text('An error occured!'),
         content: Text(message),
         actions: <Widget> [
           FlatButton(
             onPressed: () { 
               Navigator.of(ctx).pop();
             }, 
-            child: Text('OK')
+            child: const Text('OK')
           )
         ]
       ),
@@ -169,14 +171,14 @@ class _AuthCardState extends State<AuthCard> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40.0),
       ),
-      color: _authMode == AuthMode.Signup ? Color(0x9004471C) : Color(0x90b57f50),
+      color: _authMode == AuthMode.Signup ? Theme.of(context).accentColor.withOpacity(0.6) : Theme.of(context).primaryColorDark.withOpacity(0.6),
       // shadowColor: Color(0x00000000),
       child: Container(
         height: 560,//_authMode == AuthMode.Signup ? 520 : 460,
         constraints:
             BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 520 : 460),
         width: deviceSize.width * 0.75,
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -186,7 +188,6 @@ class _AuthCardState extends State<AuthCard> {
                   child: Text(_authMode == AuthMode.Signup ? "SIGN UP\n" : "LOG IN\n", 
                     style: const TextStyle(
                       fontSize: 50,
-                      color: Color(0xffF7F3F3),
                     )
                   ),
                 ),
@@ -195,13 +196,11 @@ class _AuthCardState extends State<AuthCard> {
                   // onTap: _requestFocus,
                   decoration: InputDecoration(
                     labelText: 'E-Mail',
-                    labelStyle: TextStyle(
-                      color: Color(0xff080D08),
-                    ),
+                    labelStyle: Theme.of(context).textTheme.bodyText1,
                     filled: true,//myFocusNode.hasFocus? true : false,
-                    fillColor: Color(0xffF7F3F3),
+                    fillColor: Theme.of(context).primaryColorLight,
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xffF7F3F3)),
+                      borderSide: BorderSide(color: Theme.of(context).primaryColorLight),
                       borderRadius: BorderRadius.circular(25.7),
                     ),
                     focusedBorder:OutlineInputBorder(
@@ -220,17 +219,15 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['email'] = value!;
                   },
                 ),
-                Text("\n"),
+                const Text("\n"),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    labelStyle: TextStyle(
-                      color: Color(0xff080D08),
-                    ),
+                    labelStyle: Theme.of(context).textTheme.bodyText1,
                     filled: true,//myFocusNode.hasFocus? true : false,
-                    fillColor: Color(0xffF7F3F3),
+                    fillColor: Theme.of(context).primaryColorLight,
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xffF7F3F3)),
+                      borderSide: const BorderSide(color: const Color(0xffF7F3F3)),
                       borderRadius: BorderRadius.circular(25.7),
                     ),
                     focusedBorder:OutlineInputBorder(
@@ -252,7 +249,7 @@ class _AuthCardState extends State<AuthCard> {
                 if (_authMode == AuthMode.Signup)
                   TextFormField(
                     enabled: _authMode == AuthMode.Signup,
-                    decoration: InputDecoration(labelText: 'Confirm Password'),
+                    decoration: const InputDecoration(labelText: 'Confirm Password'),
                     obscureText: true,
                     validator: _authMode == AuthMode.Signup
                         ? (value) {
@@ -262,11 +259,11 @@ class _AuthCardState extends State<AuthCard> {
                           }
                         : null,
                   ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 if (_isLoading)
-                  CircularProgressIndicator()
+                  const CircularProgressIndicator()
                 else
                   RaisedButton(
                     child:
@@ -276,11 +273,11 @@ class _AuthCardState extends State<AuthCard> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                    color: _authMode == AuthMode.Signup? Color(0x90b57f50) : Color(0x9004471C), 
+                        const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                    color: _authMode == AuthMode.Signup? const Color(0x90b57f50) : Theme.of(context).accentColor.withOpacity(0.6), 
                     textColor: Theme.of(context).primaryTextTheme.button!.color,
                   ),
-                Text("\n"),
+                const Text("\n"),
                 Text(_authMode == AuthMode.Login ? 'Don\'t have an account yet?' : 'Already have an account?'),
                 RaisedButton(
                     child: Text(_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'),
@@ -289,8 +286,8 @@ class _AuthCardState extends State<AuthCard> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                    color: _authMode == AuthMode.Signup? Color(0x9004471C) : Color(0x90b57f50), 
+                        const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                    color: _authMode == AuthMode.Signup? const Color(0x9004471C) : const Color(0x90b57f50), 
                     textColor: Theme.of(context).primaryTextTheme.button!.color,
                   ),
                 

@@ -30,10 +30,11 @@ const DUMMY_MEALS = [
     ],
     isGlutenFree: false,
     isLactoseFree: true,
+    calories: 720,
   ),
   Recipe(
     id: 'm2',
-    title: 'Toast Hawaii',
+    title: 'Toast Hawaii Feel free to add some cheese on the finished dish',
     complexity: Complexity.Simple,
     imageUrl:
         'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',
@@ -53,11 +54,12 @@ const DUMMY_MEALS = [
     ],
     isGlutenFree: false,
     isLactoseFree: false,
+    calories: 300,
   ),
   Recipe(
     id: 'm3',
     title: 'Classic Hamburger',
-    complexity: Complexity.Simple,
+    complexity: Complexity.Challenging,
     imageUrl:
         'https://cdn.pixabay.com/photo/2014/10/23/18/05/burger-500054_1280.jpg',
     duration: 45,
@@ -79,5 +81,6 @@ const DUMMY_MEALS = [
     ],
     isGlutenFree: false,
     isLactoseFree: true,
+    calories: 879
   ),
 ];
