@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:remi_kitchen/authentication/auth_screen.dart';
 import 'package:remi_kitchen/favorites_page.dart';
-import 'package:remi_kitchen/main.dart';
+import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/recipe.dart';
 import 'package:remi_kitchen/widgets/app_drawer.dart';
 import 'package:remi_kitchen/widgets/recipe_box.dart';
@@ -10,10 +10,15 @@ class HomePage extends StatelessWidget {
   static const routeName = '/home';
   final List<Recipe> availableRecipes;
   final List<Recipe> favoriteRecipes;
+  final List<Ingredient> ingredients;
   final Function toggleFavorite;
   final Function isFavorite;
+  final Function saveFilters;
+  final Function clearFilters;
+  final Map<String, bool> isChecked;
+ 
 
-  HomePage(this.favoriteRecipes, this.availableRecipes, this.toggleFavorite, this.isFavorite);
+  HomePage(this.favoriteRecipes, this.availableRecipes, this.ingredients, this.toggleFavorite, this.isFavorite, this.saveFilters,this.clearFilters, this.isChecked);
 
    void goToFavorites(BuildContext ctx) {
     Navigator.of(ctx)
@@ -27,7 +32,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       appBar: AppBar(
+        foregroundColor: Theme.of(context).primaryColorLight,
         actions: [
           const Icon(Icons.search),
           IconButton(
@@ -44,7 +51,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: AppDrawer(ingredients: ingredients, saveFilters: saveFilters, clearFilters: clearFilters, isChecked: isChecked,),
       backgroundColor: Theme.of(context).primaryColorLight,
       body: Column(
         children: [

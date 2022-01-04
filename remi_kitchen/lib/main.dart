@@ -1,19 +1,29 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:remi_kitchen/authentication/auth_screen.dart';
 import 'package:remi_kitchen/favorites_page.dart';
 
 import 'package:remi_kitchen/home_page.dart';
+import 'package:remi_kitchen/models/ingredient.dart';
+import 'package:remi_kitchen/models/measurement.dart';
 import 'package:remi_kitchen/providers/auth.dart';
 
 import 'dummy_data.dart';
 import 'models/recipe.dart';
 
-
 List<Recipe> availableRecipes = DUMMY_MEALS;
+List<Ingredient> ingredients = DUMMY_INGREDIENTS;
 List<Recipe> favoriteRecipes = [];
-
-void main() => runApp(RemisKitchen());
+Map<String, bool> isChecked = {};
+void main() {
+  ingredients.sort((a, b) => a.name.compareTo(b.name));
+  ingredients.forEach((val) {
+    isChecked.addAll({val.id: false});
+  });
+  runApp(RemisKitchen());
+}
 
 class RemisKitchen extends StatefulWidget {
   @override
@@ -37,16 +47,16 @@ class _RemisKitchenState extends State<RemisKitchen> {
 
   Map<int, Color> copper = {
     //B57F50
-    50: const Color.fromRGBO(163,99,57, .1),
-    100: const Color.fromRGBO(163,99,57, .2),
-    200: const Color.fromRGBO(163,99,57, .3),
-    300: const Color.fromRGBO(163,99,57, .4),
-    400: const Color.fromRGBO(163,99,57, .5),
-    500: const Color.fromRGBO(163,99,57, .6),
-    600: const Color.fromRGBO(163,99,57, .7),
-    700: const Color.fromRGBO(163,99,57, .8),
-    800: const Color.fromRGBO(163,99,57, .9),
-    900: const Color.fromRGBO(163,99,57, 1),
+    50: const Color.fromRGBO(181, 127, 80, .1),
+    100: const Color.fromRGBO(181, 127, 80, .2),
+    200: const Color.fromRGBO(181, 127, 80, .3),
+    300: const Color.fromRGBO(181, 127, 80, .4),
+    400: const Color.fromRGBO(181, 127, 80, .5),
+    500: const Color.fromRGBO(181, 127, 80, .6),
+    600: const Color.fromRGBO(181, 127, 80, .7),
+    700: const Color.fromRGBO(181, 127, 80, .8),
+    800: const Color.fromRGBO(181, 127, 80, .9),
+    900: const Color.fromRGBO(181, 127, 80, 1),
   };
 
   Map<int, Color> forest = {
@@ -65,16 +75,16 @@ class _RemisKitchenState extends State<RemisKitchen> {
 
   Map<int, Color> cultured = {
     //F7F3F3
-    50: const Color.fromRGBO(245,240,246, .1),
-    100: const Color.fromRGBO(245,240,246, .2),
-    200: const Color.fromRGBO(245,240,246, .3),
-    300: const Color.fromRGBO(245,240,246, .4),
-    400: const Color.fromRGBO(245,240,246, .5),
-    500: const Color.fromRGBO(245,240,246, .6),
-    600: const Color.fromRGBO(245,240,246, .7),
-    700: const Color.fromRGBO(245,240,246, .8),
-    800: const Color.fromRGBO(245,240,246, .9),
-    900: const Color.fromRGBO(245,240,246, 1),
+    50: const Color.fromRGBO(245, 240, 246, .1),
+    100: const Color.fromRGBO(245, 240, 246, .2),
+    200: const Color.fromRGBO(245, 240, 246, .3),
+    300: const Color.fromRGBO(245, 240, 246, .4),
+    400: const Color.fromRGBO(245, 240, 246, .5),
+    500: const Color.fromRGBO(245, 240, 246, .6),
+    600: const Color.fromRGBO(245, 240, 246, .7),
+    700: const Color.fromRGBO(245, 240, 246, .8),
+    800: const Color.fromRGBO(245, 240, 246, .9),
+    900: const Color.fromRGBO(245, 240, 246, 1),
   };
 
   Map<int, Color> fogra = {
@@ -91,8 +101,47 @@ class _RemisKitchenState extends State<RemisKitchen> {
     900: const Color.fromRGBO(8, 13, 8, 1),
   };
 
+  void _setFilters(Map<String, bool> isChecked) {
+    setState(() {
+      Measurement none = const Measurement(
+          ingredient: Ingredient(
+              id: 'none',
+              name: 'name',
+              unitOfMeasurement: UnitOfMeasurement.None),
+          quantity: 0,
+          extraDetails: '');
+      bool containsIngredient = false;
+
+      availableRecipes = DUMMY_MEALS.where((recipe) {
+        containsIngredient = false;
+        isChecked.forEach((key, value) {
+          if (value &&
+              recipe.ingredients.firstWhere((measurement) {
+                    if (measurement.ingredient.id.compareTo(key) == 0) {
+                      return true;
+                    }
+                    return false;
+                  }, orElse: () => none) !=
+                  none) {
+            containsIngredient = true;
+            return;
+          }
+        });
+        return containsIngredient;
+      }).toList();
+    });
+  }
+
+  void _clearFilters() {
+    setState(() {
+      availableRecipes = DUMMY_MEALS;
+      ingredients.forEach((val) {
+    isChecked.addAll({val.id: false});
+  });
+    });
+  }
+
   void _toggleFavorites(String recipeId) {
-    print(recipeId);
     final existingIndex =
         favoriteRecipes.indexWhere((element) => element.id == recipeId);
     if (existingIndex >= 0) {
@@ -107,7 +156,7 @@ class _RemisKitchenState extends State<RemisKitchen> {
     }
   }
 
-  bool _isFavorite(String recipeId){
+  bool _isFavorite(String recipeId) {
     return favoriteRecipes.any((element) => element.id == recipeId);
   }
 
@@ -121,32 +170,59 @@ class _RemisKitchenState extends State<RemisKitchen> {
         ],
         child: MaterialApp(
           title: 'RemisKitchen',
-          home: HomePage(favoriteRecipes,availableRecipes,_toggleFavorites, _isFavorite),
+          home: HomePage(
+              favoriteRecipes,
+              availableRecipes,
+              ingredients,
+              _toggleFavorites,
+              _isFavorite,
+              _setFilters,
+              _clearFilters,
+              isChecked),
           theme: ThemeData(
               primarySwatch: MaterialColor(0xFFa4dfa7, celadon),
-              primaryColorDark: MaterialColor(0xFFa36339, copper),
+              primaryColorDark: MaterialColor(0xFFB57F50, copper),
               primaryColorLight: MaterialColor(0xFFf5f0f6, cultured),
               accentColor: MaterialColor(0xFF04471C, forest),
+              shadowColor: MaterialColor(0xFF080D08, fogra),
               textTheme: const TextTheme(
                 bodyText1: TextStyle(
-                  fontFamily: "InriaSerif",
-                  color: Color(0xFF080D08),
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold
-                ),
+                    fontFamily: "InriaSerif",
+                    color: Color(0xFF080D08),
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold),
                 bodyText2: TextStyle(
                   fontFamily: "InriaSerif",
                   color: Color(0xFFF7F3F3),
                   fontSize: 17,
                 ),
+                button: TextStyle(
+                    fontFamily: "Inter",
+                    color: Color(0xFFF7F3F3),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w300),
               )),
-              initialRoute: '/home',
-              routes: {
-                HomePage.routeName: (ctx) => HomePage(favoriteRecipes,availableRecipes, _toggleFavorites, _isFavorite),
-                FavoritesPage.routeName: (ctx) => FavoritesPage(favoriteRecipes, _toggleFavorites, _isFavorite),
-                AuthScreen.routeName: (ctx) => AuthScreen(),
-
-              },
+          initialRoute: '/home',
+          routes: {
+            HomePage.routeName: (ctx) => HomePage(
+                favoriteRecipes,
+                availableRecipes,
+                ingredients,
+                _toggleFavorites,
+                _isFavorite,
+                _setFilters,
+                _clearFilters,
+                isChecked),
+            FavoritesPage.routeName: (ctx) => FavoritesPage(
+                favoriteRecipes,
+                ingredients,
+                _toggleFavorites,
+                _isFavorite,
+                _setFilters,
+                _clearFilters,
+                isChecked),
+            AuthScreen.routeName: (ctx) => AuthScreen(),
+          },
         ));
   }
 }

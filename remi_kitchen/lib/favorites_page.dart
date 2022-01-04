@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:remi_kitchen/home_page.dart';
 import 'package:remi_kitchen/main.dart';
+import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/recipe.dart';
 import 'package:remi_kitchen/widgets/app_drawer.dart';
 import 'package:remi_kitchen/widgets/recipe_box.dart';
@@ -11,10 +12,15 @@ class FavoritesPage extends StatelessWidget {
   static const routeName = '/favorites-recipes';
 
   final List<Recipe> favoriteRecipes;
+  final List<Ingredient> ingredients;
   final Function toggleFavorite;
   final Function isFavorite;
+  final Function saveFilters;
+  final Function clearFilters;
+  final Map<String, bool> isChecked;
+  
 
-  FavoritesPage(this.favoriteRecipes, this.toggleFavorite, this.isFavorite);
+  FavoritesPage(this.favoriteRecipes, this.ingredients, this.toggleFavorite, this.isFavorite,this.saveFilters, this.clearFilters, this.isChecked);
 
   void goHome(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(HomePage.routeName);
@@ -46,7 +52,7 @@ class FavoritesPage extends StatelessWidget {
             ),
           ],
         ),
-        drawer: AppDrawer(),
+        drawer: AppDrawer(ingredients: ingredients, saveFilters: saveFilters, clearFilters: clearFilters, isChecked: isChecked, ),
         backgroundColor: Theme.of(context).primaryColorLight,
         body: Center(
             child: RichText(
@@ -75,7 +81,7 @@ class FavoritesPage extends StatelessWidget {
             ),
           ],
         ),
-        drawer: AppDrawer(),
+        drawer: AppDrawer(ingredients: ingredients, saveFilters: saveFilters, clearFilters: clearFilters,isChecked: isChecked,),
         backgroundColor: Theme.of(context).primaryColorLight,
         body: Column(
         children: [

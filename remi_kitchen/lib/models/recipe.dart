@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'ingredient.dart';
+import 'package:remi_kitchen/models/measurement.dart';
 
 enum Complexity { Simple, Challenging, Hard }
 
@@ -8,7 +8,7 @@ class Recipe {
   final String id;
   final String title;
   final String imageUrl;
-  final List<Ingredient> ingredients;
+  final List<Measurement> ingredients;
   final List<String> steps;
   final int duration;
   final Complexity complexity;

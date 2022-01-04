@@ -84,6 +84,13 @@ flutter:
           style: italic
         - asset: assets/fonts/InriaSerif-Bold.ttf
           weight: 700
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Inter-Light.ttf
+          weight: 300
     - family:  MyFlutterApp
       fonts:
         - asset:  assets/icons/MyFlutterApp.ttf
