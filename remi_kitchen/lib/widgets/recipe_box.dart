@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:remi_kitchen/dummy_data.dart';
 import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/measurement.dart';
+import 'package:remi_kitchen/models/step.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
 
 import '../models/recipe.dart';
@@ -19,7 +20,7 @@ class RecipeBox extends StatelessWidget {
   final Function toggleFavorite;
   final bool isFavorite;
   final List<Measurement> ingredients;
-  final List<String> steps;
+  final List<RecipeStep> steps;
   final bool isGlutenFree;
   final bool isLactoseFree;
 

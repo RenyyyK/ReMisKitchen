@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/measurement.dart';
+import 'package:remi_kitchen/models/step.dart';
 
 import './models/recipe.dart';
 
@@ -186,13 +187,34 @@ var DUMMY_MEALS = [
             extraDetails: ''),
     ],
     steps: [
-      'Cut the tomatoes and the onion into small pieces.',
-      'Boil some water - add salt to it once it boils.',
-      'Put the spaghetti into the boiling water - they should be done in about 10 to 12 minutes.',
-      'In the meantime, heaten up some olive oil and add the cut onion.',
-      'After 2 minutes, add the tomato pieces, salt, pepper and your other spices.',
-      'The sauce will be done once the spaghetti are.',
-      'Feel free to add some cheese on top of the finished dish.'
+      RecipeStep(
+        number: 1,
+        description: 'Cut the tomatoes and the onion into small pieces.'
+      ),
+      RecipeStep(
+        number: 2,
+        description: 'Boil some water - add salt to it once it boils.'
+      ),
+      RecipeStep(
+        number: 3,
+        description: 'Put the spaghetti into the boiling water - they should be done in about 10 to 12 minutes.',
+      ),
+      RecipeStep(
+        number: 4,
+        description: 'In the meantime, heaten up some olive oil and add the cut onion.',
+      ),
+      RecipeStep(
+        number: 5,
+        description: 'After 2 minutes, add the tomato pieces, salt, pepper and your other spices.',
+      ),
+      RecipeStep(
+        number: 6,
+        description: 'The sauce will be done once the spaghetti are.',
+      ),
+      RecipeStep(
+        number: 7,
+        description: 'Feel free to add some cheese on top of the finished dish.'
+      ),
     ],
     isGlutenFree: false,
     isLactoseFree: true,
@@ -233,9 +255,18 @@ var DUMMY_MEALS = [
             extraDetails: ''),
     ],
     steps: [
-      'Butter one side of the white bread',
-      'Layer ham, the pineapple and cheese on the white bread',
-      'Bake the toast for round about 10 minutes in the oven at 200°C'
+      RecipeStep(
+        number: 1,
+        description: 'Butter one side of the white bread', 
+      ),
+      RecipeStep(
+        number: 2,
+        description: 'Layer ham, the pineapple and cheese on the white bread',
+      ),
+      RecipeStep(
+        number: 3,
+        description: 'Bake the toast for round about 10 minutes in the oven at 200°C'
+      ),
     ],
     isGlutenFree: false,
     isLactoseFree: false,
@@ -278,11 +309,26 @@ var DUMMY_MEALS = [
             extraDetails: ''),
       ],
       steps: [
-        'Form 2 patties',
-        'Fry the patties for c. 4 minutes on each side',
-        'Quickly fry the buns for c. 1 minute on each side',
-        'Bruch buns with ketchup',
-        'Serve burger with tomato, cucumber and onion'
+        RecipeStep(
+          number: 1,
+          description: 'Form 2 patties',
+        ),
+        RecipeStep(
+          number: 2,
+          description: 'Fry the patties for c. 4 minutes on each side',
+        ),
+        RecipeStep(
+          number: 3,
+          description: 'Quickly fry the buns for c. 1 minute on each side',
+        ),
+        RecipeStep(
+          number: 4,
+          description: 'Bruch buns with ketchup',
+        ),
+        RecipeStep(
+          number: 5,
+          description: 'Serve burger with tomato, cucumber and onion'
+        ),
       ],
       isGlutenFree: false,
       isLactoseFree: true,
@@ -341,11 +387,26 @@ var DUMMY_MEALS = [
             extraDetails: ''),
     ],
     steps: [
-      'Wash and cut salad and herbs',
-      'Dice the salmon',
-      'Process mustard, vinegar and olive oil into a dessing',
-      'Prepare the salad',
-      'Add salmon cubes and dressing'
+      RecipeStep(
+        number: 1,
+        description: 'Wash and cut salad and herbs',
+      ),
+      RecipeStep(
+        number: 2,
+        description: 'Dice the salmon',
+      ),
+      RecipeStep(
+        number: 3,
+        description: 'Process mustard, vinegar and olive oil into a dessing',
+      ),
+      RecipeStep(
+        number: 4,
+        description: 'Prepare the salad',
+      ),
+      RecipeStep(
+        number: 5,
+        description: 'Add salmon cubes and dressing'
+      ),
     ],
     isGlutenFree: true,
     isLactoseFree: true,
@@ -391,15 +452,42 @@ var DUMMY_MEALS = [
             extraDetails: ''),
     ],
     steps: [
-      'Dissolve gelatine in pot',
-      'Add orange juice and sugar',
-      'Take pot off the stove',
-      'Add 2 tablespoons of yoghurt',
-      'Stir gelatin under remaining yoghurt',
-      'Cool everything down in the refrigerator',
-      'Whip the cream and lift it under die orange mass',
-      'Cool down again for at least 4 hours',
-      'Serve with orange peel',
+      RecipeStep(
+        number: 1,
+        description: 'Dissolve gelatine in pot',
+      ),
+      RecipeStep(
+        number: 2,
+        description: 'Add orange juice and sugar',
+      ),
+      RecipeStep(
+        number: 3,
+        description: 'Take pot off the stove',
+      ),
+      RecipeStep(
+        number: 4,
+        description: 'Add 2 tablespoons of yoghurt',
+      ),
+      RecipeStep(
+        number: 5,
+        description: 'Stir gelatin under remaining yoghurt',
+      ),
+      RecipeStep(
+        number: 6,
+        description: 'Cool everything down in the refrigerator',
+      ),
+      RecipeStep(
+        number: 7,
+        description: 'Whip the cream and lift it under die orange mass',
+      ),
+      RecipeStep(
+        number: 8,
+        description: 'Cool down again for at least 4 hours',
+      ),
+      RecipeStep(
+        number: 9,
+        description: 'Serve with orange peel',
+      ),
     ],
     isGlutenFree: true,
     isLactoseFree: false,
@@ -450,10 +538,22 @@ var DUMMY_MEALS = [
             extraDetails: 'melted')
       ],
       steps: [
-        'In a large bowl, sift together the flour, baking powder, salt and sugar.',
-        'Make a well in the center and pour in the milk, egg and melted butter; mix until smooth.',
-        'Heat a lightly oiled griddle or frying pan over medium high heat.',
-        'Pour or scoop the batter onto the griddle, using approximately 1/4 cup for each pancake. Brown on both sides and serve hot.'
+        RecipeStep(
+          number: 1,
+          description: 'In a large bowl, sift together the flour, baking powder, salt and sugar.',
+        ),
+        RecipeStep(
+          number: 2,
+          description: 'Make a well in the center and pour in the milk, egg and melted butter; mix until smooth.',
+        ),
+        RecipeStep(
+          number: 3,
+          description: 'Heat a lightly oiled griddle or frying pan over medium high heat.',
+        ),
+        RecipeStep(
+          number: 4,
+          description: 'Pour or scoop the batter onto the griddle, using approximately 1/4 cup for each pancake. Brown on both sides and serve hot.'
+        ), 
       ],
       isGlutenFree: true,
       isLactoseFree: false,

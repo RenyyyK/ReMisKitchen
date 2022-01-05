@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remi_kitchen/models/recipe.dart';
+import 'package:remi_kitchen/models/step.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
 import 'models/measurement.dart';
 
@@ -15,7 +16,7 @@ class RecipePage extends StatelessWidget {
   final Function toggleFavorite;
   final bool isFavorite;
   final List<Measurement> ingredients;
-  final List<String> steps;
+  final List<RecipeStep> steps;
   final bool isGlutenFree;
   final bool isLactoseFree;
 
@@ -47,6 +48,57 @@ class RecipePage extends StatelessWidget {
     }
   }
 
+  void adjustIngredients() {
+
+  }
+
+  Widget getIngredients(context) {
+    List<Widget> list = [];
+    for(Measurement i in ingredients){
+        list.add(Row(
+          children: <Widget>[
+            Text(i.quantity.toString() + " ", 
+              style: TextStyle(color: Theme.of(context).shadowColor),
+            ),
+            Text(i.ingredient.unitOfMeasurement.name + "   ",
+              style: TextStyle(color: Theme.of(context).shadowColor),
+            ),
+            Text(i.ingredient.name + " ",
+              style: TextStyle(
+                color: Theme.of(context).shadowColor,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(i.extraDetails,
+              style: TextStyle(color: Theme.of(context).shadowColor),
+            ),
+          ]
+        ));
+    }
+    return new Column(children: list);
+  }
+
+  Widget getSteps(context) {
+    List<Widget> list = [];
+    for(RecipeStep s in steps){
+        list.add(Column(
+          children: <Widget>[
+            Text("Step " + s.number.toString(), 
+              style: TextStyle(
+                color: Theme.of(context).shadowColor,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text("Step " + s.description, 
+              style: TextStyle(
+                color: Theme.of(context).shadowColor
+              ),
+            ),
+          ]
+        ));
+    }
+    return new Column(children: list);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +116,11 @@ class RecipePage extends StatelessWidget {
           ],
         ),
         body: Container(
-          child: Stack(
+          decoration: BoxDecoration(
+            color: Theme.of(context).accentColor,
+          ),
+          child: Expanded(
+            child: Stack(
               children: <Widget>[
                 Column(children: <Widget>[
                   Stack(
@@ -220,21 +276,71 @@ class RecipePage extends StatelessWidget {
                   ),
                 ]),
                 Positioned(
-                    top: -200,
-                    left: 5,
-                    child: Expanded(
-                      child: Card(
-                        color: Colors.white,
+                  top: 300,
+                  left: 15,
+                  right: 15,
+                  child: Container(
+                    height: 500,
+                    child: Card(
+                      color: Theme.of(context).primaryColorLight,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          topRight: Radius.circular(50),
+                        ),
+                      ),
+                      child: Container(
+                        padding: new EdgeInsets.all(15.0),
                         child: Column(
                           children: <Widget>[
-                            Text("Hello"),
-                            Text("Dry")
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    Text(isGlutenFree ? "  Glutenfree" : "  Gluten",
+                                      style: TextStyle(color: Theme.of(context).primaryColorDark),
+                                    ),
+                                    Text(isLactoseFree ? "  Lactosefree" : "  Lactose",
+                                      style: TextStyle(color: Theme.of(context).primaryColorDark),
+                                    ),
+                                  ],
+                                ),
+                                Spacer(),
+                                RaisedButton(
+                                  child: Text('Adjust Ingredients'),
+                                  onPressed: adjustIngredients,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                                  color: Theme.of(context).primaryColorDark, 
+                                  textColor: Theme.of(context).primaryColorLight,
+                                ),
+                              ],
+                            ),
+                            Text("\nINGREDIENTS:\n",
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            getIngredients(context),
+                            Text("\nSTEPS:\n",
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            getSteps(context),
                           ],
                         ),
                       ),
                     ),
                   ),
+                )
               ]
+            )
           )
         )
     );

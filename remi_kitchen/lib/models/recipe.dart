@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:remi_kitchen/models/measurement.dart';
+import 'package:remi_kitchen/models/step.dart';
 
 enum Complexity { Simple, Challenging, Hard }
 
@@ -9,7 +10,7 @@ class Recipe {
   final String title;
   final String imageUrl;
   final List<Measurement> ingredients;
-  final List<String> steps;
+  final List<RecipeStep> steps;
   final int duration;
   final Complexity complexity;
   final bool isGlutenFree;
