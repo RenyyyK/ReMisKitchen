@@ -57,10 +57,10 @@ class RecipePage extends StatelessWidget {
     for(Measurement i in ingredients){
         list.add(Row(
           children: <Widget>[
-            Text(i.quantity.toString() + " ", 
+            Text(i.ingredient.unitOfMeasurement.name != 'None' ? (i.ingredient.unitOfMeasurement.name == 'Unit'? i.quantity.toInt().toString() + " " : i.quantity.toString() + " ") : "", 
               style: TextStyle(color: Theme.of(context).shadowColor),
             ),
-            Text(i.ingredient.unitOfMeasurement.name + "   ",
+            Text(i.ingredient.unitOfMeasurement.name != 'None' && i.ingredient.unitOfMeasurement.name != 'Unit' ? i.ingredient.unitOfMeasurement.name + "   " : "",
               style: TextStyle(color: Theme.of(context).shadowColor),
             ),
             Text(i.ingredient.name + " ",
@@ -69,7 +69,7 @@ class RecipePage extends StatelessWidget {
                 fontWeight: FontWeight.bold
               ),
             ),
-            Text(i.extraDetails,
+            Text(i.extraDetails != '' ? "(" + i.extraDetails + ")" : "",
               style: TextStyle(color: Theme.of(context).shadowColor),
             ),
           ]
@@ -89,7 +89,7 @@ class RecipePage extends StatelessWidget {
                 fontWeight: FontWeight.bold
               ),
             ),
-            Text("Step " + s.description, 
+            Text("Step " + s.description + "\n", 
               style: TextStyle(
                 color: Theme.of(context).shadowColor
               ),
