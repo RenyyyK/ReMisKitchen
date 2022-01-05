@@ -97,6 +97,10 @@ class FavoritesPage extends StatelessWidget {
                 calories: favoriteRecipes[index].calories,
                 toggleFavorite: toggleFavorite,
                 isFavorite: isFavorite(favoriteRecipes[index].id),
+                ingredients: favoriteRecipes[index].ingredients,
+                steps: favoriteRecipes[index].steps,
+                isGlutenFree: favoriteRecipes[index].isGlutenFree,
+                isLactoseFree: favoriteRecipes[index].isLactoseFree,
               );
             },
             itemCount: favoriteRecipes.length,

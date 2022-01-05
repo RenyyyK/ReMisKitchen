@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:remi_kitchen/dummy_data.dart';
+import 'package:remi_kitchen/models/ingredient.dart';
+import 'package:remi_kitchen/models/measurement.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
 
 import '../models/recipe.dart';
@@ -15,6 +18,10 @@ class RecipeBox extends StatelessWidget {
   final int calories;
   final Function toggleFavorite;
   final bool isFavorite;
+  final List<Measurement> ingredients;
+  final List<String> steps;
+  final bool isGlutenFree;
+  final bool isLactoseFree;
 
   RecipeBox({
     required this.title,
@@ -25,6 +32,10 @@ class RecipeBox extends StatelessWidget {
     required this.calories,
     required this.toggleFavorite,
     required this.isFavorite,
+    required this.ingredients,
+    required this.steps,
+    required this.isGlutenFree,
+    required this.isLactoseFree
   });
 
   String get complexityText {
@@ -45,7 +56,20 @@ class RecipeBox extends StatelessWidget {
     return InkWell(
         onTap: () => {
               Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                return RecipePage(toggleFavorite);
+                return RecipePage(
+                  title: title,
+                  imageUrl: imageUrl,
+                  complexity: complexity,
+                  duration: duration,
+                  id: id,
+                  calories: calories,
+                  toggleFavorite: toggleFavorite,
+                  isFavorite: isFavorite,
+                  ingredients: ingredients,
+                  steps: steps,
+                  isGlutenFree: isGlutenFree,
+                  isLactoseFree: isLactoseFree
+                );
               }))
             },
         child: Container(

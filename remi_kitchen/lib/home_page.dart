@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
 
   HomePage(this.favoriteRecipes, this.availableRecipes, this.ingredients, this.toggleFavorite, this.isFavorite, this.saveFilters,this.clearFilters, this.isChecked);
 
-   void goToFavorites(BuildContext ctx) {
+  void goToFavorites(BuildContext ctx) {
     Navigator.of(ctx)
         .pushNamed(FavoritesPage.routeName, arguments: [favoriteRecipes,toggleFavorite, isFavorite]);
   }
@@ -67,6 +67,10 @@ class HomePage extends StatelessWidget {
                 calories: availableRecipes[index].calories,
                 toggleFavorite: toggleFavorite,
                 isFavorite: isFavorite(availableRecipes[index].id),
+                ingredients: availableRecipes[index].ingredients,
+                steps: availableRecipes[index].steps,
+                isGlutenFree: availableRecipes[index].isGlutenFree,
+                isLactoseFree: availableRecipes[index].isLactoseFree
               );
             },
             itemCount: availableRecipes.length,
