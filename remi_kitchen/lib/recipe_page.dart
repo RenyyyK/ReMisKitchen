@@ -20,6 +20,8 @@ class RecipePage extends StatelessWidget {
   final bool isGlutenFree;
   final bool isLactoseFree;
 
+  Map<String, bool?> checkboxes = {};
+
   RecipePage({
     required this.title,
     required this.id,
@@ -48,15 +50,21 @@ class RecipePage extends StatelessWidget {
     }
   }
 
-  void adjustIngredients() {
-
-  }
+  void adjustIngredients() {}
 
   Widget getIngredients(context) {
     List<Widget> list = [];
     for(Measurement i in ingredients){
         list.add(Row(
           children: <Widget>[
+            Checkbox(
+              value: checkboxes["i.ingredient.id"],
+              onChanged: (bool? value) {
+                setState(() {
+                  checkboxes["i.ingredient.id"] = value;
+                });
+              },
+            ),
             Text(i.ingredient.unitOfMeasurement.name != 'None' ? (i.ingredient.unitOfMeasurement.name == 'Unit'? i.quantity.toInt().toString() + " " : i.quantity.toString() + " ") : "", 
               style: TextStyle(color: Theme.of(context).shadowColor),
             ),
@@ -99,8 +107,13 @@ class RecipePage extends StatelessWidget {
     }
     return new Column(children: list);
   }
+  
   @override
   Widget build(BuildContext context) {
+    for (Measurement i in ingredients) {
+      checkboxes["i.ingredient.id"] = false;
+    }
+
     return Scaffold(
         appBar: AppBar(
           foregroundColor: Theme.of(context).primaryColorLight,
@@ -345,4 +358,7 @@ class RecipePage extends StatelessWidget {
         )
     );
   }
+}
+
+void setState(Null Function() param0) {
 }
