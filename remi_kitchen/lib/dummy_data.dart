@@ -193,7 +193,7 @@ var DUMMY_MEALS = [
       ),
       RecipeStep(
         number: 2,
-        description: 'Boil some water - add salt to it once it boils.'
+        description: 'Boil some water and add salt to it once it boils.'
       ),
       RecipeStep(
         number: 3,
