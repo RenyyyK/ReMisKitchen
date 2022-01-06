@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:remi_kitchen/main.dart';
+import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/recipe.dart';
 import 'package:remi_kitchen/models/step.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
 import 'models/measurement.dart';
 
-class RecipePage extends StatelessWidget {
+class RecipePage extends StatefulWidget {
+  @override
+  _RecipePageState createState() => _RecipePageState(
+    title: title,
+    imageUrl: imageUrl,
+    complexity: complexity,
+    duration: duration,
+    id: id,
+    calories: calories,
+    toggleFavorite: toggleFavorite,
+    isFavorite: isFavorite,
+    ingredients: ingredients,
+    steps: steps,
+    isGlutenFree: isGlutenFree,
+    isLactoseFree: isLactoseFree
+  );
+
   static const routeName = '/recipe-page';
 
   final String id;
@@ -20,9 +38,41 @@ class RecipePage extends StatelessWidget {
   final bool isGlutenFree;
   final bool isLactoseFree;
 
-  Map<String, bool?> checkboxes = {};
-
   RecipePage({
+    required this.title,
+    required this.id,
+    required this.imageUrl,
+    required this.duration,
+    required this.complexity,
+    required this.calories,
+    required this.toggleFavorite,
+    required this.isFavorite,
+    required this.ingredients,
+    required this.steps,
+    required this.isGlutenFree,
+    required this.isLactoseFree
+    });
+}
+
+class _RecipePageState extends State<RecipePage> {
+  // static const routeName = '/recipe-page';
+
+  final String id;
+  final String title;
+  final String imageUrl;
+  final int duration;
+  final Complexity complexity;
+  final int calories;
+  final Function toggleFavorite;
+  final bool isFavorite;
+  final List<Measurement> ingredients;
+  final List<RecipeStep> steps;
+  final bool isGlutenFree;
+  final bool isLactoseFree;
+
+  late Map<String, bool?> checkboxes = Map.fromIterable(ingredients, key: (e) => e.ingredient.id, value: (e) => false);
+
+  _RecipePageState({
     required this.title,
     required this.id,
     required this.imageUrl,
@@ -58,10 +108,10 @@ class RecipePage extends StatelessWidget {
         list.add(Row(
           children: <Widget>[
             Checkbox(
-              value: checkboxes["i.ingredient.id"],
-              onChanged: (bool? value) {
+              value: checkboxes[i.ingredient.id],
+              onChanged: (value) {
                 setState(() {
-                  checkboxes["i.ingredient.id"] = value;
+                  checkboxes[i.ingredient.id] = value;
                 });
               },
             ),
@@ -358,7 +408,4 @@ class RecipePage extends StatelessWidget {
         )
     );
   }
-}
-
-void setState(Null Function() param0) {
 }
