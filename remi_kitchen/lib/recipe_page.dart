@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:remi_kitchen/favorites_page.dart';
 import 'package:remi_kitchen/main.dart';
 import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/recipe.dart';
 import 'package:remi_kitchen/models/step.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
+import 'authentication/auth_screen.dart';
 import 'models/measurement.dart';
 
 class RecipePage extends StatefulWidget {
@@ -64,12 +66,13 @@ class _RecipePageState extends State<RecipePage> {
   final Complexity complexity;
   final int calories;
   final Function toggleFavorite;
-  final bool isFavorite;
+  late final bool isFavorite;
   final List<Measurement> ingredients;
   final List<RecipeStep> steps;
   final bool isGlutenFree;
   final bool isLactoseFree;
 
+  late var isFavoriteVariable = isFavorite;
   late Map<String, bool?> checkboxes = Map.fromIterable(ingredients, key: (e) => e.ingredient.id, value: (e) => false);
   late Map<int, bool?> checksteps = Map.fromIterable(steps, key: (e) => e.number, value: (e) => false);
 
@@ -186,14 +189,19 @@ class _RecipePageState extends State<RecipePage> {
         appBar: AppBar(
           foregroundColor: Theme.of(context).primaryColorLight,
           actions: [
-            Icon(Icons.search, color: Theme.of(context).primaryColorLight),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Icon(Icons.favorite,
-                  color: Theme.of(context).primaryColorLight),
+            const Icon(Icons.search),
+            IconButton(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              icon: const Icon(Icons.favorite),
+              onPressed: () => Navigator.of(context).pushNamed(FavoritesPage.routeName, arguments: [favoriteRecipes,toggleFavorite, isFavorite])
             ),
-            Icon(Icons.account_circle_outlined,
-                color: Theme.of(context).primaryColorLight),
+            IconButton(
+              icon: Icon(
+                Icons.account_circle_outlined,
+                color: Theme.of(context).primaryColorLight,
+              ),
+              onPressed: () => Navigator.of(context).pushNamed(AuthScreen.routeName),
+            ),
           ],
         ),
         body: ListView(
@@ -255,10 +263,13 @@ class _RecipePageState extends State<RecipePage> {
                                             ),
                                             IconButton(
                                               icon: Icon(
-                                                isFavorite ? Icons.favorite : MyFlutterApp.love,
+                                                isFavoriteVariable ? Icons.favorite : MyFlutterApp.love,
                                                 color: Theme.of(context).primaryColorLight,
                                               ),
-                                              onPressed: () => {toggleFavorite(id)},
+                                              onPressed: () => setState(() {
+                                                isFavoriteVariable ? isFavoriteVariable = false: isFavoriteVariable = true;
+                                                toggleFavorite(id);
+                                              }),
                                               iconSize: 30,
                                             ),
                                           ]
