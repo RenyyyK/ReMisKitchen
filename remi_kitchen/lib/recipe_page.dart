@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:remi_kitchen/favorites_page.dart';
 import 'package:remi_kitchen/main.dart';
 import 'package:remi_kitchen/models/ingredient.dart';
@@ -73,6 +76,7 @@ class _RecipePageState extends State<RecipePage> {
   final bool isLactoseFree;
 
   late var isFavoriteVariable = isFavorite;
+  late Map<String, double?> adjustedIngredients = Map.fromIterable(ingredients, key: (e) => e.ingredient.id, value: (e) => e.quantity);
   late Map<String, bool?> checkboxes = Map.fromIterable(ingredients, key: (e) => e.ingredient.id, value: (e) => false);
   late Map<int, bool?> checksteps = Map.fromIterable(steps, key: (e) => e.number, value: (e) => false);
 
@@ -104,7 +108,119 @@ class _RecipePageState extends State<RecipePage> {
     }
   }
 
-  void adjustIngredients() {}
+  void adjustIngredients() {
+    // adjust ingredients
+  }
+
+  void minus(String i) {
+    if(adjustedIngredients[i] != 0.0) {
+      // adjustedIngredients[i] -= 0.10;
+    }
+  }
+
+  void plus(String i) {
+      // adjustedIngredients[i] += 0.10;
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      contentPadding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+      title: const Text('Adjust ingredients'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("If you would like to change the measurement for an ingredient, we will adjust the other ingredients according to that.\n"),
+          Text("For adjusting, click on the ingredient you want to change.\n"),
+          Text("Please note, that you can adjust only the ingredients that have a measuring unit.\n"),
+        ],
+      ),
+      actions: <Widget>[
+        new RaisedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColorLight,
+          child: const Text('OK'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+          color: Theme.of(context).primaryColorDark,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAdjustDialog(BuildContext context, Measurement i) {
+    return new AlertDialog(
+      shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      contentPadding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+      title: Text(i.ingredient.name + "\n\n",
+        style: TextStyle(
+          color: Theme.of(context).accentColor,
+          fontWeight: FontWeight.bold
+        ),
+      ),
+      content: Container(
+        height: 100,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.remove), 
+              onPressed: () { 
+                setState(() {
+                  minus(i.ingredient.id);
+                });
+              }
+            ),
+            Text(adjustedIngredients[i.ingredient.id].toString(),
+              style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).shadowColor,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.add), 
+              onPressed: () {
+                setState(() {
+                  plus(i.ingredient.id);
+                });
+              },
+            ),
+            Text("  " + i.ingredient.unitOfMeasurement.name,
+              style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).shadowColor,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        new RaisedButton(
+          onPressed: () {
+            adjustIngredients();
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColorLight,
+          child: const Text('Adjust'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+          color: Theme.of(context).primaryColorDark,
+        ),
+      ],
+    );
+  }
 
   void tapOnStep(number) {
       for(var k in checksteps.keys) {
@@ -116,6 +232,7 @@ class _RecipePageState extends State<RecipePage> {
   Widget getIngredients(context) {
     List<Widget> list = [];
     for(Measurement i in ingredients){
+      if(i.ingredient.unitOfMeasurement.name == 'None') {
         list.add(Row(
           children: <Widget>[
             Checkbox(
@@ -125,13 +242,6 @@ class _RecipePageState extends State<RecipePage> {
                   checkboxes[i.ingredient.id] = value;
                 });
               },
-            ),
-            Text(i.ingredient.unitOfMeasurement.name != 'None' ? (i.ingredient.unitOfMeasurement.name == 'Unit'? i.quantity.toInt().toString() + " " : i.quantity.toString() + " ") : "", 
-              style: TextStyle(
-                color: Theme.of(context).shadowColor),
-            ),
-            Text(i.ingredient.unitOfMeasurement.name != 'None' && i.ingredient.unitOfMeasurement.name != 'Unit' ? i.ingredient.unitOfMeasurement.name + "   " : "",
-              style: TextStyle(color: Theme.of(context).shadowColor),
             ),
             Text(i.ingredient.name + " ",
               style: TextStyle(
@@ -144,6 +254,49 @@ class _RecipePageState extends State<RecipePage> {
             ),
           ]
         ));
+      }
+      else {
+        list.add(Row(
+          children: <Widget>[
+            Checkbox(
+              value: checkboxes[i.ingredient.id],
+              onChanged: (value) {
+                setState(() {
+                  checkboxes[i.ingredient.id] = value;
+                });
+              },
+            ),
+            InkWell(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildAdjustDialog(context, i),
+                ); 
+              },
+              child: Row(
+                children: <Widget>[
+                  Text(i.ingredient.unitOfMeasurement.name == 'Unit' ? i.quantity.toInt().toString() + " " : i.quantity.toString() + " ", 
+                    style: TextStyle(
+                      color: Theme.of(context).shadowColor),
+                  ),
+                  Text(i.ingredient.unitOfMeasurement.name != 'Unit' ? i.ingredient.unitOfMeasurement.name + "   " : "",
+                    style: TextStyle(color: Theme.of(context).shadowColor),
+                  ),
+                  Text(i.ingredient.name + " ",
+                    style: TextStyle(
+                      color: Theme.of(context).shadowColor,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  Text(i.extraDetails != '' ? "(" + i.extraDetails + ")" : "",
+                    style: TextStyle(color: Theme.of(context).shadowColor),
+                  ),
+                ],
+              ),
+            ),
+          ]
+        ));
+      }
     }
     return new Column(children: list);
   }
@@ -353,20 +506,6 @@ class _RecipePageState extends State<RecipePage> {
                                     ],
                                   )),
                             ),
-                            // Positioned(
-                            //   right: 0,
-                            //   top: 0,
-                            //   child: IconButton(
-                            //     padding: EdgeInsets.symmetric(
-                            //         vertical: 25, horizontal: 25),
-                            //     icon: Icon(
-                            //       isFavorite ? Icons.favorite : MyFlutterApp.love,
-                            //       color: Theme.of(context).primaryColorLight,
-                            //     ),
-                            //     onPressed: () => {toggleFavorite(id)},
-                            //     iconSize: 30,
-                            //   ),
-                            // ),
                           ],
                         ),
                       ]
@@ -408,7 +547,12 @@ class _RecipePageState extends State<RecipePage> {
                                       padding: new EdgeInsets.all(15.0),
                                       child: RaisedButton(
                                         child: Text('Adjust Ingredients'),
-                                        onPressed: adjustIngredients,
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) => _buildPopupDialog(context),
+                                          );
+                                        },
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(30),
                                         ),
