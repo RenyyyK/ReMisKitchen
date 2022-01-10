@@ -7,10 +7,13 @@ import 'package:remi_kitchen/main.dart';
 import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/recipe.dart';
 import 'package:remi_kitchen/models/step.dart';
+import 'package:remi_kitchen/widgets/adjust_dialog.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
 import 'authentication/auth_screen.dart';
 import 'models/measurement.dart';
 import 'dart:math';
+
+import 'widgets/popup_dialog.dart';
 
 class RecipePage extends StatefulWidget {
   @override
@@ -109,127 +112,6 @@ class _RecipePageState extends State<RecipePage> {
     }
   }
 
-  void adjustIngredients() {
-    // adjust ingredients
-
-  }
-
-  double roundDouble(double value, int places){ 
-   num mod = pow(10.0, places); 
-   return ((value * mod).round().toDouble() / mod); 
-  }
-
-  void minus(String i) {
-    if(adjustedIngredients[i] != 0.0 && adjustedIngredients[i] != null) {
-      setState(() {
-        adjustedIngredients[i] = roundDouble(adjustedIngredients[i]! - 0.1, 2);
-      });
-    }
-  }
-
-  void plus(String i) {
-      adjustedIngredients[i] = roundDouble(adjustedIngredients[i]! + 0.1, 2);
-      // print(adjustedIngredients[i]);
-  }
-
-  Widget _buildPopupDialog(BuildContext context) {
-    return new AlertDialog(
-      shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      contentPadding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
-      title: const Text('Adjust ingredients'),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text("If you would like to change the measurement for an ingredient, we will adjust the other ingredients according to that.\n"),
-          Text("For adjusting, click on the ingredient you want to change.\n"),
-          Text("Please note, that you can adjust only the ingredients that have a measuring unit.\n"),
-        ],
-      ),
-      actions: <Widget>[
-        new RaisedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          textColor: Theme.of(context).primaryColorLight,
-          child: const Text('OK'),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-          color: Theme.of(context).primaryColorDark,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAdjustDialog(BuildContext context, Measurement i) {
-    return new AlertDialog(
-      shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      contentPadding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
-      title: Text(i.ingredient.name + "\n\n",
-        style: TextStyle(
-          color: Theme.of(context).accentColor,
-          fontWeight: FontWeight.bold
-        ),
-      ),
-      content: Container(
-        height: 100,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.remove), 
-              onPressed: () { 
-                minus(i.ingredient.id);
-              }
-            ),
-            Text(adjustedIngredients[i.ingredient.id].toString(),
-              style: TextStyle(
-                fontSize: 20,
-                color: Theme.of(context).shadowColor,
-                fontWeight: FontWeight.bold
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.add), 
-              onPressed: () {
-                setState(() {
-                  plus(i.ingredient.id);
-                });
-              },
-            ),
-            Text("  " + i.ingredient.unitOfMeasurement.name,
-              style: TextStyle(
-                fontSize: 20,
-                color: Theme.of(context).shadowColor,
-                fontWeight: FontWeight.bold
-              ),
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        new RaisedButton(
-          onPressed: () {
-            adjustIngredients();
-            Navigator.of(context).pop();
-          },
-          textColor: Theme.of(context).primaryColorLight,
-          child: const Text('Adjust'),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-          color: Theme.of(context).primaryColorDark,
-        ),
-      ],
-    );
-  }
-
   void tapOnStep(number) {
       for(var k in checksteps.keys) {
           checksteps[k] = false;
@@ -278,7 +160,7 @@ class _RecipePageState extends State<RecipePage> {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (BuildContext context) => _buildAdjustDialog(context, i),
+                  builder: (BuildContext context) => AdjustDialog(i, adjustedIngredients),
                 ); 
               },
               child: Row(
@@ -312,36 +194,41 @@ class _RecipePageState extends State<RecipePage> {
   Widget getSteps(context) {
     List<Widget> list = [];
     for(RecipeStep s in steps){
-        list.add( Card(
-          color: checksteps[s.number] == true ? Theme.of(context).primaryColor : Theme.of(context).primaryColorLight,
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                tapOnStep(s.number);
-              });
-            },
-            child: Padding(
-              padding: new EdgeInsets.fromLTRB(15, 10, 15, 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Step " + s.number.toString(), 
-                    style: TextStyle(
-                      color: Theme.of(context).shadowColor,
-                      fontWeight: FontWeight.bold
+        list.add( Container(
+          width: MediaQuery.of(context).size.width,
+          child: Card(
+            color: checksteps[s.number] == true ? Theme.of(context).primaryColor : Theme.of(context).primaryColorLight,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  tapOnStep(s.number);
+                });
+              },
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Step " + s.number.toString(), 
+                      style: TextStyle(
+                        color: Theme.of(context).shadowColor,
+                        fontWeight: FontWeight.bold
+                      ),
                     ),
-                  ),
-                  Text(s.description + "", 
-                    style: TextStyle(
-                      color: Theme.of(context).shadowColor
+                    Text(s.description + "", 
+                      style: TextStyle(
+                        color: Theme.of(context).shadowColor
+                      ),
                     ),
-                  ),
-                ]
+                  ]
+                )
               )
-            )
-        )));
+          )),
+        ));
     }
-    return new Column(children: list);
+    return Padding(
+      padding: EdgeInsets.symmetric( vertical: 30, horizontal: 20),
+      child: Column(children: list));
   }
   
   @override
@@ -524,11 +411,10 @@ class _RecipePageState extends State<RecipePage> {
                       right: 15,
                       child: Container(
                         child: Card(
-                          color: Theme.of(context).primaryColorLight,
+                
+                          color: Theme.of(context).primaryColorLight.withOpacity(0.95),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(50),
-                              topRight: Radius.circular(50),
+                            borderRadius: BorderRadius.all(Radius.circular(50)
                             ),
                           ),
                           child: Container(
@@ -558,7 +444,7 @@ class _RecipePageState extends State<RecipePage> {
                                         onPressed: () {
                                           showDialog(
                                             context: context,
-                                            builder: (BuildContext context) => _buildPopupDialog(context),
+                                            builder: (BuildContext context) => PopupDialog(),
                                           );
                                         },
                                         shape: RoundedRectangleBorder(
