@@ -10,6 +10,7 @@ import 'package:remi_kitchen/models/step.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
 import 'authentication/auth_screen.dart';
 import 'models/measurement.dart';
+import 'dart:math';
 
 class RecipePage extends StatefulWidget {
   @override
@@ -110,16 +111,25 @@ class _RecipePageState extends State<RecipePage> {
 
   void adjustIngredients() {
     // adjust ingredients
+
+  }
+
+  double roundDouble(double value, int places){ 
+   num mod = pow(10.0, places); 
+   return ((value * mod).round().toDouble() / mod); 
   }
 
   void minus(String i) {
-    if(adjustedIngredients[i] != 0.0) {
-      // adjustedIngredients[i] -= 0.10;
+    if(adjustedIngredients[i] != 0.0 && adjustedIngredients[i] != null) {
+      setState(() {
+        adjustedIngredients[i] = roundDouble(adjustedIngredients[i]! - 0.1, 2);
+      });
     }
   }
 
   void plus(String i) {
-      // adjustedIngredients[i] += 0.10;
+      adjustedIngredients[i] = roundDouble(adjustedIngredients[i]! + 0.1, 2);
+      // print(adjustedIngredients[i]);
   }
 
   Widget _buildPopupDialog(BuildContext context) {
@@ -174,9 +184,7 @@ class _RecipePageState extends State<RecipePage> {
             IconButton(
               icon: Icon(Icons.remove), 
               onPressed: () { 
-                setState(() {
-                  minus(i.ingredient.id);
-                });
+                minus(i.ingredient.id);
               }
             ),
             Text(adjustedIngredients[i.ingredient.id].toString(),
