@@ -1,23 +1,29 @@
-import 'dart:ui';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:remi_kitchen/authentication/auth_screen.dart';
 import 'package:remi_kitchen/favorites_page.dart';
 
 import 'package:remi_kitchen/home_page.dart';
 import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/measurement.dart';
-import 'package:remi_kitchen/providers/auth.dart';
+import 'package:remi_kitchen/services/auth.dart';
+import 'package:remi_kitchen/wrapper.dart';
 
 import 'dummy_data.dart';
+import 'models/appuser.dart';
 import 'models/recipe.dart';
 
 List<Recipe> availableRecipes = DUMMY_MEALS;
 List<Ingredient> ingredients = DUMMY_INGREDIENTS;
 List<Recipe> favoriteRecipes = [];
 Map<String, bool> isChecked = {};
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   ingredients.sort((a, b) => a.name.compareTo(b.name));
   ingredients.forEach((val) {
     isChecked.addAll({val.id: false});
@@ -136,8 +142,8 @@ class _RemisKitchenState extends State<RemisKitchen> {
     setState(() {
       availableRecipes = DUMMY_MEALS;
       ingredients.forEach((val) {
-    isChecked.addAll({val.id: false});
-  });
+        isChecked.addAll({val.id: false});
+      });
     });
   }
 
@@ -162,17 +168,13 @@ class _RemisKitchenState extends State<RemisKitchen> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => Auth(),
-        ),
- 
-      ],
-      child: Consumer<Auth>(
-        builder: (ctx, auth, _) => MaterialApp(
+    return StreamProvider<AppUser?>.value(
+        value: AuthService().user,
+        initialData: null,
+        catchError: (_, __) => null,
+        child: MaterialApp(
           title: 'RemisKitchen',
-          home: auth.isAuth ? HomePage(
+          home: Wrapper(
               favoriteRecipes,
               availableRecipes,
               ingredients,
@@ -180,7 +182,7 @@ class _RemisKitchenState extends State<RemisKitchen> {
               _isFavorite,
               _setFilters,
               _clearFilters,
-              isChecked) : AuthScreen(),
+              isChecked),
           theme: ThemeData(
               primarySwatch: MaterialColor(0xFFa4dfa7, celadon),
               primaryColorDark: MaterialColor(0xFFB57F50, copper),
@@ -225,8 +227,6 @@ class _RemisKitchenState extends State<RemisKitchen> {
                 isChecked),
             AuthScreen.routeName: (ctx) => AuthScreen(),
           },
-        )
-      ),
-    );
+        ));
   }
 }

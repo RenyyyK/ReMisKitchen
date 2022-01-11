@@ -3,6 +3,7 @@ import 'package:remi_kitchen/authentication/auth_screen.dart';
 import 'package:remi_kitchen/favorites_page.dart';
 import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/recipe.dart';
+import 'package:remi_kitchen/services/auth.dart';
 import 'package:remi_kitchen/widgets/app_drawer.dart';
 import 'package:remi_kitchen/widgets/recipe_box.dart';
 
@@ -29,6 +30,9 @@ class HomePage extends StatelessWidget {
     Navigator.of(ctx).pushNamed(AuthScreen.routeName);
   }
 
+  
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +51,10 @@ class HomePage extends StatelessWidget {
               Icons.account_circle_outlined,
               color: Theme.of(context).primaryColorLight,
             ),
-            onPressed: () => goToAuth(context),
+            //onPressed: () => goToAuth(context),
+            onPressed: () async {
+              await _auth.signOut();
+            },
           ),
         ],
       ),
