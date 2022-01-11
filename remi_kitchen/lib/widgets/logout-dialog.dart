@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:remi_kitchen/home_page.dart';
+import 'package:remi_kitchen/main.dart';
 import 'package:remi_kitchen/providers/auth.dart';
 
 class LogoutDialog extends StatelessWidget {
@@ -37,6 +39,7 @@ class LogoutDialog extends StatelessWidget {
         RaisedButton(
           onPressed: () {
             Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(RemisKitchen.routeName);
             auth.logout();
           },
           textColor: Theme.of(context).primaryColorLight,

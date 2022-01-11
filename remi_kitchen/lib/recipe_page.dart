@@ -9,7 +9,6 @@ import 'package:remi_kitchen/widgets/logout-dialog.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
 import 'authentication/auth_screen.dart';
 import 'models/measurement.dart';
-import 'dart:math';
 
 import 'widgets/popup_dialog.dart';
 
@@ -265,7 +264,7 @@ class _RecipePageState extends State<RecipePage> {
         appBar: AppBar(
           foregroundColor: Theme.of(context).primaryColorLight,
           actions: [
-            const Icon(Icons.search),
+            // const Icon(Icons.search),
             IconButton(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 icon: const Icon(Icons.favorite),
@@ -277,8 +276,7 @@ class _RecipePageState extends State<RecipePage> {
                 Icons.account_circle_outlined,
                 color: Theme.of(context).primaryColorLight,
               ),
-              onPressed: () =>
-                  auth.isAuth ? logout(context) : goToAuth(context),
+              onPressed: () => auth.isAuth ? logout(context) : goToAuth(context),
             ),
           ],
         ),

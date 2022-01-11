@@ -26,6 +26,8 @@ void main() {
 }
 
 class RemisKitchen extends StatefulWidget {
+  static const routeName = '/welcome';
+
   @override
   State<RemisKitchen> createState() => _RemisKitchenState();
 }
@@ -207,6 +209,7 @@ class _RemisKitchenState extends State<RemisKitchen> {
               )),
           // initialRoute: '/home',
           routes: {
+            RemisKitchen.routeName: (ctx) => RemisKitchen(),
             HomePage.routeName: (ctx) => HomePage(
                 favoriteRecipes,
                 availableRecipes,

@@ -48,7 +48,7 @@ class FavoritesPage extends StatelessWidget {
         appBar: AppBar(
           foregroundColor: Theme.of(context).primaryColorLight,
           actions: [
-            Icon(Icons.search),
+            // Icon(Icons.search),
             IconButton(
               padding: EdgeInsets.symmetric(horizontal: 16),
               icon: Icon(Icons.home),
@@ -59,7 +59,7 @@ class FavoritesPage extends StatelessWidget {
                 Icons.account_circle_outlined,
                 color: Colors.white,
               ),
-              onPressed: () => goToAuth(context),
+              onPressed: () => auth.isAuth ? logout(context) : goToAuth(context),
             ),
           ],
         ),
@@ -77,7 +77,7 @@ class FavoritesPage extends StatelessWidget {
         appBar: AppBar(
           foregroundColor: Theme.of(context).primaryColorLight,
           actions: [
-            Icon(Icons.search),
+            // Icon(Icons.search),
             IconButton(
               padding: EdgeInsets.symmetric(horizontal: 16),
               icon: Icon(Icons.home),

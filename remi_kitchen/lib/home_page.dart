@@ -6,7 +6,6 @@ import 'package:remi_kitchen/models/recipe.dart';
 import 'package:remi_kitchen/providers/auth.dart';
 import 'package:remi_kitchen/widgets/app_drawer.dart';
 import 'package:remi_kitchen/widgets/logout-dialog.dart';
-import 'package:remi_kitchen/widgets/popup_dialog.dart';
 import 'package:remi_kitchen/widgets/recipe_box.dart';
 
 class HomePage extends StatelessWidget {
@@ -48,7 +47,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         foregroundColor: Theme.of(context).primaryColorLight,
         actions: [
-          const Icon(Icons.search),
+          // const Icon(Icons.search),
           IconButton(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             icon: const Icon(Icons.favorite),
