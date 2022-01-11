@@ -3,7 +3,10 @@ import 'package:remi_kitchen/authentication/auth_screen.dart';
 import 'package:remi_kitchen/favorites_page.dart';
 import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/recipe.dart';
+import 'package:remi_kitchen/providers/auth.dart';
 import 'package:remi_kitchen/widgets/app_drawer.dart';
+import 'package:remi_kitchen/widgets/logout-dialog.dart';
+import 'package:remi_kitchen/widgets/popup_dialog.dart';
 import 'package:remi_kitchen/widgets/recipe_box.dart';
 
 class HomePage extends StatelessWidget {
@@ -16,9 +19,10 @@ class HomePage extends StatelessWidget {
   final Function saveFilters;
   final Function clearFilters;
   final Map<String, bool> isChecked;
+  final Auth auth;
  
 
-  HomePage(this.favoriteRecipes, this.availableRecipes, this.ingredients, this.toggleFavorite, this.isFavorite, this.saveFilters,this.clearFilters, this.isChecked);
+  HomePage(this.favoriteRecipes, this.availableRecipes, this.ingredients, this.toggleFavorite, this.isFavorite, this.saveFilters,this.clearFilters, this.isChecked, this.auth);
 
   void goToFavorites(BuildContext ctx) {
     Navigator.of(ctx)
@@ -27,6 +31,14 @@ class HomePage extends StatelessWidget {
 
   void goToAuth(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(AuthScreen.routeName);
+  }
+
+  void logout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) =>
+        LogoutDialog(auth: auth,),
+    );
   }
 
   @override
@@ -47,7 +59,7 @@ class HomePage extends StatelessWidget {
               Icons.account_circle_outlined,
               color: Theme.of(context).primaryColorLight,
             ),
-            onPressed: () => goToAuth(context),
+            onPressed: () => auth.isAuth ? logout(context) : goToAuth(context),
           ),
         ],
       ),
@@ -70,7 +82,8 @@ class HomePage extends StatelessWidget {
                 ingredients: availableRecipes[index].ingredients,
                 steps: availableRecipes[index].steps,
                 isGlutenFree: availableRecipes[index].isGlutenFree,
-                isLactoseFree: availableRecipes[index].isLactoseFree
+                isLactoseFree: availableRecipes[index].isLactoseFree,
+                auth: auth,
               );
             },
             itemCount: availableRecipes.length,

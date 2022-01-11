@@ -3,7 +3,9 @@ import 'package:remi_kitchen/home_page.dart';
 import 'package:remi_kitchen/main.dart';
 import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/recipe.dart';
+import 'package:remi_kitchen/providers/auth.dart';
 import 'package:remi_kitchen/widgets/app_drawer.dart';
+import 'package:remi_kitchen/widgets/logout-dialog.dart';
 import 'package:remi_kitchen/widgets/recipe_box.dart';
 
 import 'authentication/auth_screen.dart';
@@ -18,9 +20,10 @@ class FavoritesPage extends StatelessWidget {
   final Function saveFilters;
   final Function clearFilters;
   final Map<String, bool> isChecked;
+  final Auth auth;
   
 
-  FavoritesPage(this.favoriteRecipes, this.ingredients, this.toggleFavorite, this.isFavorite,this.saveFilters, this.clearFilters, this.isChecked);
+  FavoritesPage(this.favoriteRecipes, this.ingredients, this.toggleFavorite, this.isFavorite,this.saveFilters, this.clearFilters, this.isChecked, this.auth);
 
   void goHome(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(HomePage.routeName);
@@ -28,6 +31,14 @@ class FavoritesPage extends StatelessWidget {
 
   void goToAuth(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(AuthScreen.routeName);
+  }
+
+  void logout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) =>
+        LogoutDialog(auth: auth,),
+    );
   }
 
   @override
@@ -77,7 +88,7 @@ class FavoritesPage extends StatelessWidget {
                 Icons.account_circle_outlined,
                 color: Colors.white,
               ),
-              onPressed: () => goToAuth(context),
+              onPressed: () => auth.isAuth ? logout(context) : goToAuth(context),
             ),
           ],
         ),
@@ -101,6 +112,7 @@ class FavoritesPage extends StatelessWidget {
                 steps: favoriteRecipes[index].steps,
                 isGlutenFree: favoriteRecipes[index].isGlutenFree,
                 isLactoseFree: favoriteRecipes[index].isLactoseFree,
+                auth: auth,
               );
             },
             itemCount: favoriteRecipes.length,

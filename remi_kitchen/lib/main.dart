@@ -180,7 +180,8 @@ class _RemisKitchenState extends State<RemisKitchen> {
               _isFavorite,
               _setFilters,
               _clearFilters,
-              isChecked) : AuthScreen(),
+              isChecked, 
+              auth) : AuthScreen(),
           theme: ThemeData(
               primarySwatch: MaterialColor(0xFFa4dfa7, celadon),
               primaryColorDark: MaterialColor(0xFFB57F50, copper),
@@ -214,7 +215,8 @@ class _RemisKitchenState extends State<RemisKitchen> {
                 _isFavorite,
                 _setFilters,
                 _clearFilters,
-                isChecked),
+                isChecked, 
+                auth),
             FavoritesPage.routeName: (ctx) => FavoritesPage(
                 favoriteRecipes,
                 ingredients,
@@ -222,7 +224,8 @@ class _RemisKitchenState extends State<RemisKitchen> {
                 _isFavorite,
                 _setFilters,
                 _clearFilters,
-                isChecked),
+                isChecked, 
+                auth),
             AuthScreen.routeName: (ctx) => AuthScreen(),
           },
         )

@@ -3,7 +3,9 @@ import 'package:remi_kitchen/favorites_page.dart';
 import 'package:remi_kitchen/main.dart';
 import 'package:remi_kitchen/models/recipe.dart';
 import 'package:remi_kitchen/models/step.dart';
+import 'package:remi_kitchen/providers/auth.dart';
 import 'package:remi_kitchen/widgets/adjust_dialog.dart';
+import 'package:remi_kitchen/widgets/logout-dialog.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
 import 'authentication/auth_screen.dart';
 import 'models/measurement.dart';
@@ -25,7 +27,8 @@ class RecipePage extends StatefulWidget {
       ingredients: ingredients,
       steps: steps,
       isGlutenFree: isGlutenFree,
-      isLactoseFree: isLactoseFree);
+      isLactoseFree: isLactoseFree,
+      auth: auth);
 
   static const routeName = '/recipe-page';
 
@@ -41,6 +44,7 @@ class RecipePage extends StatefulWidget {
   final List<RecipeStep> steps;
   final bool isGlutenFree;
   final bool isLactoseFree;
+  final Auth auth;
 
   RecipePage(
       {required this.title,
@@ -54,7 +58,8 @@ class RecipePage extends StatefulWidget {
       required this.ingredients,
       required this.steps,
       required this.isGlutenFree,
-      required this.isLactoseFree});
+      required this.isLactoseFree,
+      required this.auth});
 }
 
 class _RecipePageState extends State<RecipePage> {
@@ -72,6 +77,7 @@ class _RecipePageState extends State<RecipePage> {
   final List<RecipeStep> steps;
   final bool isGlutenFree;
   final bool isLactoseFree;
+  final Auth auth;
 
   late var isFavoriteVariable = isFavorite;
   late Map<String, double?> adjustedIngredients = Map.fromIterable(ingredients.where((element) => element.ingredient.unitOfMeasurement.name != 'None'), key: (e) => e.ingredient.id, value: (e) => e.quantity);
@@ -90,7 +96,8 @@ class _RecipePageState extends State<RecipePage> {
       required this.ingredients,
       required this.steps,
       required this.isGlutenFree,
-      required this.isLactoseFree});
+      required this.isLactoseFree,
+      required this.auth});
 
   String get complexityText {
     switch (complexity) {
@@ -226,6 +233,18 @@ class _RecipePageState extends State<RecipePage> {
         child: Column(children: list));
   }
 
+  void goToAuth(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(AuthScreen.routeName);
+  }
+
+  void logout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) =>
+        LogoutDialog(auth: auth,),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -245,7 +264,7 @@ class _RecipePageState extends State<RecipePage> {
                 color: Theme.of(context).primaryColorLight,
               ),
               onPressed: () =>
-                  Navigator.of(context).pushNamed(AuthScreen.routeName),
+                  auth.isAuth ? logout(context) : goToAuth(context),
             ),
           ],
         ),

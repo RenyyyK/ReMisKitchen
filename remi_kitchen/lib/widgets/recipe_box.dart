@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:remi_kitchen/dummy_data.dart';
+import 'package:remi_kitchen/home_page.dart';
 import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/measurement.dart';
 import 'package:remi_kitchen/models/step.dart';
+import 'package:remi_kitchen/providers/auth.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
 
 import '../models/recipe.dart';
@@ -23,6 +25,7 @@ class RecipeBox extends StatelessWidget {
   final List<RecipeStep> steps;
   final bool isGlutenFree;
   final bool isLactoseFree;
+  final Auth auth;
 
   RecipeBox({
     required this.title,
@@ -36,7 +39,8 @@ class RecipeBox extends StatelessWidget {
     required this.ingredients,
     required this.steps,
     required this.isGlutenFree,
-    required this.isLactoseFree
+    required this.isLactoseFree,
+    required this.auth,
   });
 
   String get complexityText {
@@ -69,7 +73,8 @@ class RecipeBox extends StatelessWidget {
                   ingredients: ingredients,
                   steps: steps,
                   isGlutenFree: isGlutenFree,
-                  isLactoseFree: isLactoseFree
+                  isLactoseFree: isLactoseFree,
+                  auth: auth,
                 );
               }))
             },

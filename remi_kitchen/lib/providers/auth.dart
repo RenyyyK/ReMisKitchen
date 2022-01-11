@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:remi_kitchen/models/http_exception.dart';
 
 class Auth with ChangeNotifier {
-  late String token;
+  late String? token;
   DateTime? expiryDate;
-  late String userId;
+  late String? userId;
 
   bool get isAuth {
     return getToken != null;
@@ -61,5 +61,12 @@ class Auth with ChangeNotifier {
 
   Future<void> login(String? email, String? password) async {
     return authenticate(email, password, 'signInWithPassword');
+  }
+
+  void logout() {
+    token = null;
+    userId = null;
+    expiryDate = null;
+    notifyListeners();
   }
 }
