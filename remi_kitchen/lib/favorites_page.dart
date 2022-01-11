@@ -65,13 +65,31 @@ class FavoritesPage extends StatelessWidget {
         ),
         drawer: AppDrawer(ingredients: ingredients, saveFilters: saveFilters, clearFilters: clearFilters, isChecked: isChecked, ),
         backgroundColor: Theme.of(context).primaryColorLight,
-        body: Center(
-            child: RichText(
-          text: TextSpan(
-            text: "You don't have any favorites yet! ",
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
-        )));
+        body: Stack(
+          children: <Widget>[
+            Container(
+              constraints: const BoxConstraints.expand(),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("images/wallpaper.png"),
+                  fit: BoxFit.cover
+                ),
+              )
+            ),
+        
+        
+            Center(
+              child: RichText(
+                text: TextSpan(
+                  text: "You don't have any favorites yet! ",
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+            ),
+
+          ],
+        ), 
+      );
     }
     return  Scaffold(
         appBar: AppBar(
@@ -94,30 +112,48 @@ class FavoritesPage extends StatelessWidget {
         ),
         drawer: AppDrawer(ingredients: ingredients, saveFilters: saveFilters, clearFilters: clearFilters,isChecked: isChecked,),
         backgroundColor: Theme.of(context).primaryColorLight,
-        body: Column(
-        children: [
-          Expanded(
-              child: ListView.builder(
-            itemBuilder: (ctx, index) {
-              return RecipeBox(
-                title: favoriteRecipes[index].title,
-                imageUrl: favoriteRecipes[index].imageUrl,
-                complexity: favoriteRecipes[index].complexity,
-                duration: favoriteRecipes[index].duration,
-                id: favoriteRecipes[index].id,
-                calories: favoriteRecipes[index].calories,
-                toggleFavorite: toggleFavorite,
-                isFavorite: isFavorite(favoriteRecipes[index].id),
-                ingredients: favoriteRecipes[index].ingredients,
-                steps: favoriteRecipes[index].steps,
-                isGlutenFree: favoriteRecipes[index].isGlutenFree,
-                isLactoseFree: favoriteRecipes[index].isLactoseFree,
-                auth: auth,
-              );
-            },
-            itemCount: favoriteRecipes.length,
-          ))
-        ],
-      ),);
+        body: Stack(
+          children: <Widget>[
+            Container(
+              constraints: const BoxConstraints.expand(),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("images/wallpaper.png"),
+                  fit: BoxFit.cover
+                ),
+              )
+            ),
+        
+        
+        
+            Column(
+              children: [
+                Expanded(
+                    child: ListView.builder(
+                  itemBuilder: (ctx, index) {
+                    return RecipeBox(
+                      title: favoriteRecipes[index].title,
+                      imageUrl: favoriteRecipes[index].imageUrl,
+                      complexity: favoriteRecipes[index].complexity,
+                      duration: favoriteRecipes[index].duration,
+                      id: favoriteRecipes[index].id,
+                      calories: favoriteRecipes[index].calories,
+                      toggleFavorite: toggleFavorite,
+                      isFavorite: isFavorite(favoriteRecipes[index].id),
+                      ingredients: favoriteRecipes[index].ingredients,
+                      steps: favoriteRecipes[index].steps,
+                      isGlutenFree: favoriteRecipes[index].isGlutenFree,
+                      isLactoseFree: favoriteRecipes[index].isLactoseFree,
+                      auth: auth,
+                    );
+                  },
+                  itemCount: favoriteRecipes.length,
+                ))
+              ],
+            ),
+
+          ]
+        )
+      );
   }
 }

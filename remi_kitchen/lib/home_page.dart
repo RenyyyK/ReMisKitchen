@@ -64,31 +64,46 @@ class HomePage extends StatelessWidget {
       ),
       drawer: AppDrawer(ingredients: ingredients, saveFilters: saveFilters, clearFilters: clearFilters, isChecked: isChecked,),
       backgroundColor: Theme.of(context).primaryColorLight,
-      body: Column(
-        children: [
-          Expanded(
-              child: ListView.builder(
-            itemBuilder: (ctx, index) {
-              return RecipeBox(
-                title: availableRecipes[index].title,
-                imageUrl: availableRecipes[index].imageUrl,
-                complexity: availableRecipes[index].complexity,
-                duration: availableRecipes[index].duration,
-                id: availableRecipes[index].id,
-                calories: availableRecipes[index].calories,
-                toggleFavorite: toggleFavorite,
-                isFavorite: isFavorite(availableRecipes[index].id),
-                ingredients: availableRecipes[index].ingredients,
-                steps: availableRecipes[index].steps,
-                isGlutenFree: availableRecipes[index].isGlutenFree,
-                isLactoseFree: availableRecipes[index].isLactoseFree,
-                auth: auth,
-              );
-            },
-            itemCount: availableRecipes.length,
-          ))
-        ],
-      ),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            constraints: const BoxConstraints.expand(),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/wallpaper.png"),
+                fit: BoxFit.cover
+              ),
+            )
+          ),
+      
+      
+          Column(
+            children: [
+              Expanded(
+                  child: ListView.builder(
+                itemBuilder: (ctx, index) {
+                  return RecipeBox(
+                    title: availableRecipes[index].title,
+                    imageUrl: availableRecipes[index].imageUrl,
+                    complexity: availableRecipes[index].complexity,
+                    duration: availableRecipes[index].duration,
+                    id: availableRecipes[index].id,
+                    calories: availableRecipes[index].calories,
+                    toggleFavorite: toggleFavorite,
+                    isFavorite: isFavorite(availableRecipes[index].id),
+                    ingredients: availableRecipes[index].ingredients,
+                    steps: availableRecipes[index].steps,
+                    isGlutenFree: availableRecipes[index].isGlutenFree,
+                    isLactoseFree: availableRecipes[index].isLactoseFree,
+                    auth: auth,
+                  );
+                },
+                itemCount: availableRecipes.length,
+              ))
+            ],
+          ),
+
+      ]),
     );
   }
 }
