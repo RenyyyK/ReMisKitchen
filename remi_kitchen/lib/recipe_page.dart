@@ -120,13 +120,16 @@ class _RecipePageState extends State<RecipePage> {
   }
 
   void adjustIngredients(id, oldQuantity, newQuantity) {
-    print("In parent: " + newQuantity.toString());
-    // var percent = oldQuantity / adjustedIngredients[id];
-    // for(var k in adjustedIngredients.keys) {
-    //   if(k != id) {
-    //       adjustedIngredients[k] = adjustedIngredients[k]! / percent;
-    //   }
-    // }
+    var percent = oldQuantity / newQuantity;
+    setState(() {
+      adjustedIngredients[id] = newQuantity;
+      for(var k in adjustedIngredients.keys) {
+        if(k != id) {
+            adjustedIngredients[k] = adjustedIngredients[k]! / percent;
+        }
+      }
+    });
+    
   }
 
   Widget getIngredients(context) {
@@ -176,8 +179,8 @@ class _RecipePageState extends State<RecipePage> {
               children: <Widget>[
                 Text(
                   i.ingredient.unitOfMeasurement.name == 'Unit'
-                      ? i.quantity.toInt().toString() + " "
-                      : i.quantity.toString() + " ",
+                      ? adjustedIngredients[i.ingredient.id]!.toInt().toString() + " "
+                      : adjustedIngredients[i.ingredient.id].toString() + " ",
                   style: TextStyle(color: Theme.of(context).shadowColor),
                 ),
                 Text(
