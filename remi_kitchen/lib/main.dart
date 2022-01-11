@@ -163,14 +163,16 @@ class _RemisKitchenState extends State<RemisKitchen> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(
-            value: Auth(),
-          ),
-        ],
-        child: MaterialApp(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => Auth(),
+        ),
+ 
+      ],
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
           title: 'RemisKitchen',
-          home: HomePage(
+          home: auth.isAuth ? HomePage(
               favoriteRecipes,
               availableRecipes,
               ingredients,
@@ -178,7 +180,7 @@ class _RemisKitchenState extends State<RemisKitchen> {
               _isFavorite,
               _setFilters,
               _clearFilters,
-              isChecked),
+              isChecked) : AuthScreen(),
           theme: ThemeData(
               primarySwatch: MaterialColor(0xFFa4dfa7, celadon),
               primaryColorDark: MaterialColor(0xFFB57F50, copper),
@@ -202,7 +204,7 @@ class _RemisKitchenState extends State<RemisKitchen> {
                     fontSize: 17,
                     fontWeight: FontWeight.w300),
               )),
-          initialRoute: '/home',
+          // initialRoute: '/home',
           routes: {
             HomePage.routeName: (ctx) => HomePage(
                 favoriteRecipes,
@@ -223,6 +225,8 @@ class _RemisKitchenState extends State<RemisKitchen> {
                 isChecked),
             AuthScreen.routeName: (ctx) => AuthScreen(),
           },
-        ));
+        )
+      ),
+    );
   }
 }
