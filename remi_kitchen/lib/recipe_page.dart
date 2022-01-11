@@ -119,6 +119,16 @@ class _RecipePageState extends State<RecipePage> {
       checksteps[number] = true;
   }
 
+  void adjustIngredients(id, oldQuantity, newQuantity) {
+    print("In parent: " + newQuantity.toString());
+    // var percent = oldQuantity / adjustedIngredients[id];
+    // for(var k in adjustedIngredients.keys) {
+    //   if(k != id) {
+    //       adjustedIngredients[k] = adjustedIngredients[k]! / percent;
+    //   }
+    // }
+  }
+
   Widget getIngredients(context) {
     List<Widget> list = [];
     for (Measurement i in ingredients) {
@@ -154,12 +164,13 @@ class _RecipePageState extends State<RecipePage> {
             },
           ),
           InkWell(
-            onTap: () {
-              showDialog(
+            onTap: () async {
+              var newQuantity = await showDialog(
                 context: context,
                 builder: (BuildContext context) =>
-                    AdjustDialog(i, adjustedIngredients),
+                    AdjustDialog(i, adjustedIngredients[i.ingredient.id]),
               );
+              adjustIngredients(i.ingredient.id, adjustedIngredients[i.ingredient.id], newQuantity);
             },
             child: Row(
               children: <Widget>[

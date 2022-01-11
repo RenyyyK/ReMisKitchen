@@ -5,9 +5,11 @@ import 'package:remi_kitchen/models/measurement.dart';
 
 class AdjustDialog extends StatefulWidget {
   final Measurement i;
-  final Map<String, double?> adjustedIngredients;
+  final double? quantity;
 
-  AdjustDialog(this.i, this.adjustedIngredients);
+  late double? adjustedQuantity = quantity;
+
+  AdjustDialog(this.i, this.quantity);
 
   @override
   State<AdjustDialog> createState() => _AdjustDialogState();
@@ -20,29 +22,18 @@ class _AdjustDialogState extends State<AdjustDialog> {
     return ((value * mod).round().toDouble() / mod);
   }
 
-  void minus(String i) {
-    if (widget.adjustedIngredients[i] != 0.0 &&
-        widget.adjustedIngredients[i] != null) {
+  void minus() {
+    if (widget.adjustedQuantity != 0.0) {
       setState(() {
-        widget.adjustedIngredients[i] =
-            roundDouble(widget.adjustedIngredients[i]! - 0.1, 2);
+        widget.adjustedQuantity = roundDouble(widget.adjustedQuantity! - 0.1, 2);
       });
     }
   }
 
-  void plus(String i) {
-    widget.adjustedIngredients[i] =
-        roundDouble(widget.adjustedIngredients[i]! + 0.1, 2);
-    // print(widget.adjustedIngredients[widget.i]);
-  }
-
-  void adjustIngredients(id, oldQuantity) {
-    var percent = oldQuantity / widget.adjustedIngredients[id];
-    for(var k in widget.adjustedIngredients.keys) {
-      if(k != id) {
-          widget.adjustedIngredients[k] = widget.adjustedIngredients[k]! / percent;
-      }
-    }
+  void plus() {
+    setState(() {
+      widget.adjustedQuantity = roundDouble(widget.adjustedQuantity! + 0.1, 2);
+    });
   }
 
   @override
@@ -65,10 +56,10 @@ class _AdjustDialogState extends State<AdjustDialog> {
             IconButton(
                 icon: const Icon(Icons.remove),
                 onPressed: () {
-                  minus(widget.i.ingredient.id);
+                  minus();
                 }),
             Text(
-              widget.adjustedIngredients[widget.i.ingredient.id].toString(),
+              widget.adjustedQuantity.toString(),
               style: TextStyle(
                   fontSize: 20,
                   color: Theme.of(context).shadowColor,
@@ -77,9 +68,7 @@ class _AdjustDialogState extends State<AdjustDialog> {
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
-                setState(() {
-                  plus(widget.i.ingredient.id);
-                });
+                  plus();
               },
             ),
             Text(
@@ -95,8 +84,7 @@ class _AdjustDialogState extends State<AdjustDialog> {
       actions: <Widget>[
         RaisedButton(
           onPressed: () {
-            adjustIngredients(widget.i.ingredient.id, widget.i.quantity);
-            Navigator.of(context).pop();
+            Navigator.pop(context, widget.adjustedQuantity);
           },
           textColor: Theme.of(context).primaryColorLight,
           child: const Text('Adjust'),
