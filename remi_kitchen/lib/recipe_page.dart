@@ -1,10 +1,6 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:remi_kitchen/favorites_page.dart';
 import 'package:remi_kitchen/main.dart';
-import 'package:remi_kitchen/models/ingredient.dart';
 import 'package:remi_kitchen/models/recipe.dart';
 import 'package:remi_kitchen/models/step.dart';
 import 'package:remi_kitchen/widgets/my_flutter_app_icons.dart';
@@ -77,7 +73,7 @@ class _RecipePageState extends State<RecipePage> {
   final bool isLactoseFree;
 
   late var isFavoriteVariable = isFavorite;
-  late Map<String, double?> adjustedIngredients = Map.fromIterable(ingredients, key: (e) => e.ingredient.id, value: (e) => e.quantity);
+  late Map<String, double?> adjustedIngredients = Map.fromIterable(ingredients.where((element) => element.ingredient.unitOfMeasurement.name != 'None'), key: (e) => e.ingredient.id, value: (e) => e.quantity);
   late Map<String, bool?> checkboxes = Map.fromIterable(ingredients, key: (e) => e.ingredient.id, value: (e) => false);
   late Map<int, bool?> checksteps = Map.fromIterable(steps, key: (e) => e.number, value: (e) => false);
 
@@ -109,9 +105,13 @@ class _RecipePageState extends State<RecipePage> {
     }
   }
 
-  void adjustIngredients() {
-    // adjust ingredients
-
+  void adjustIngredients(id, oldQuantity) {
+    var percent = oldQuantity / adjustedIngredients[id];
+    for(var k in adjustedIngredients.keys) {
+      if(k != id) {
+          adjustedIngredients[k] = adjustedIngredients[k]! / percent;
+      }
+    }
   }
 
   double roundDouble(double value, int places){ 
@@ -120,16 +120,13 @@ class _RecipePageState extends State<RecipePage> {
   }
 
   void minus(String i) {
-    if(adjustedIngredients[i] != 0.0 && adjustedIngredients[i] != null) {
-      setState(() {
+    if(adjustedIngredients[i] != 0.0) {
         adjustedIngredients[i] = roundDouble(adjustedIngredients[i]! - 0.1, 2);
-      });
     }
   }
 
   void plus(String i) {
       adjustedIngredients[i] = roundDouble(adjustedIngredients[i]! + 0.1, 2);
-      // print(adjustedIngredients[i]);
   }
 
   Widget _buildPopupDialog(BuildContext context) {
@@ -215,7 +212,9 @@ class _RecipePageState extends State<RecipePage> {
       actions: <Widget>[
         new RaisedButton(
           onPressed: () {
-            adjustIngredients();
+            setState(() {
+              adjustIngredients(i.ingredient.id, i.quantity);
+            });
             Navigator.of(context).pop();
           },
           textColor: Theme.of(context).primaryColorLight,
@@ -283,7 +282,7 @@ class _RecipePageState extends State<RecipePage> {
               },
               child: Row(
                 children: <Widget>[
-                  Text(i.ingredient.unitOfMeasurement.name == 'Unit' ? i.quantity.toInt().toString() + " " : i.quantity.toString() + " ", 
+                  Text(i.ingredient.unitOfMeasurement.name == 'Unit' ? adjustedIngredients[i.ingredient.id]!.toInt().toString() + " " : adjustedIngredients[i.ingredient.id].toString() + " ", 
                     style: TextStyle(
                       color: Theme.of(context).shadowColor),
                   ),
@@ -374,7 +373,7 @@ class _RecipePageState extends State<RecipePage> {
               ),
                 child: Stack(
                   children: <Widget>[
-                    Expanded(child: Column(
+                    Column(
                       children: <Widget>[
                         Stack(
                           children: <Widget>[
@@ -517,7 +516,7 @@ class _RecipePageState extends State<RecipePage> {
                           ],
                         ),
                       ]
-                    ),),
+                    ),
                     Positioned(
                       top: 300,
                       left: 15,
