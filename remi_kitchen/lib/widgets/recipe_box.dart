@@ -150,7 +150,8 @@ class RecipeBox extends StatelessWidget {
                                     children: <Widget>[
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 20),
+                                            MediaQuery.of(context).size.width > 400 ? const EdgeInsets.only(right: 20) : const EdgeInsets.all( 0),
+                                        
                                         child: Row(
                                           children: <Widget>[
                                             Padding(
@@ -170,9 +171,9 @@ class RecipeBox extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      Padding(
+                                      Padding( 
                                         padding:
-                                            const EdgeInsets.only(right: 20),
+                                            MediaQuery.of(context).size.width > 400 ? const EdgeInsets.only(right: 20) : const EdgeInsets.all( 0),
                                         child: Row(
                                           children: <Widget>[
                                             Padding(
@@ -194,7 +195,7 @@ class RecipeBox extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 20),
+                                            MediaQuery.of(context).size.width > 400 ? const EdgeInsets.only(right: 20) : const EdgeInsets.all( 0),
                                         child: Row(
                                           children: <Widget>[
                                             Padding(
